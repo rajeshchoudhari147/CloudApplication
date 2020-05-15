@@ -1,5 +1,5 @@
 export const Images = {
-    r_logo: require('./images/1receipt_r_logo.png'),
+    logo: require('./images/bank-logo.png'),
     onBoarding_card: require('./images/onBoarding_Card.png'),
     onBoarding_basket: require('./images/onBoarding_Basket.png'),
     onBoarding_receipt: require('./images/onBoarding_Receipt.png'),

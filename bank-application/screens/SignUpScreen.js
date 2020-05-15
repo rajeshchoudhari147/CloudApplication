@@ -36,53 +36,8 @@ class SignUpScreen extends Component {
           </View>
         </View>
         <View style={styles.innerContainer}>
-          <Modal
-            animationType={"slide"}
-            transparent={true}
-            visible={this.state.show}
-            onBackdropPress={() => this.setState({ show: false })}
-            onSwipeComplete={() => this.setState({ show: false })}
-            swipeDirection="down"
-          >
-            <View style={styles.detail}>
-              <View style={styles.cancelButton}>
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate("SignIn")}
-                >
-                  <MaterialIcons
-                    name="cancel"
-                    size={35}
-                    style={styles.backButton}
-                    color={Colors.grey}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.walletContent}>
-                <Text style={styles.walletTitle}>Add To Wallet</Text>
-                <Text style={styles.walletText}>
-                  Add your 1card into your wallet
-                </Text>
-                <Image
-                  style={styles.wallet}
-                  resizeMode={"contain"}
-                  source={
-                    Platform.OS === "ios" ? Images.wallet : Images.GWallet
-                  }
-                />
-                <TouchableOpacity
-                  style={styles.walletButton}
-                  onPress={() => {
-                    this.setState({ show: false });
-                  }}
-                >
-                  <Text style={styles.WalletButtonText}>Add</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
-
           <View>
-            <Image style={styles.brandLogo} source={Images.r_logo} />
+            <Image style={styles.brandLogo} source={Images.logo} />
           </View>
 
           <View style={styles.buttonContainer}>
@@ -126,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    backgroundColor: "white",
+    backgroundColor: Colors.secondaryColor,
     marginTop: 41,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -135,26 +90,25 @@ const styles = StyleSheet.create({
     marginTop: 18,
     marginLeft: 30,
   },
+  icon: {
+    color: Colors.primaryColor
+  },
   innerContainer: {
-    backgroundColor: "white",
+    backgroundColor: Colors.secondaryColor,
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
   },
   brandLogo: {
-    width: 139,
-    height: 172,
-    marginLeft: 80,
-    marginRight: 80,
+    width: 300,
+    height: 300,
   },
   text_input: {
     width: 300,
     height: 65,
-    borderRadius: 22,
+    borderRadius: 30,
     marginBottom: 29,
-    shadowColor: Colors.shadow,
     backgroundColor: "white",
-    shadowOpacity: 0.4,
     fontFamily: "josefsans-regular",
     fontSize: 18,
     padding: 20,
@@ -163,7 +117,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 58,
     backgroundColor: Colors.primaryColor,
-    borderRadius: 22,
+    borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 10,
@@ -173,7 +127,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: "josefsans-regular",
-    color: "white",
+    color: Colors.secondaryColor,
     fontSize: 20,
   },
   fontButton: {
@@ -184,60 +138,7 @@ const styles = StyleSheet.create({
     fontFamily: "josefsans-regular",
     fontSize: 18,
     marginBottom: 80,
-  },
-  cancelButton: {
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    backgroundColor: "white",
-    marginTop: 41,
-    paddingRight: 15,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-  },
-  detail: {
-    backgroundColor: "#00000066",
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  walletContent: {
-    backgroundColor: "#ffffff",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
-  },
-  walletTitle: {
-    fontFamily: "josefsans-bold",
-    fontSize: 24,
-    color: Colors.primaryColor,
-    marginBottom: 25,
-  },
-  walletText: {
-    fontFamily: "josefsans-regular",
-    fontSize: 18,
-  },
-  wallet: {
-    width: 96,
-    height: 96,
-    margin: 40,
-  },
-  walletButton: {
-    width: 270,
-    height: 58,
-    backgroundColor: "#ECFCF4",
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 50,
-    flexDirection: "row",
-    shadowColor: Colors.shadow,
-    shadowOpacity: 0.1,
-  },
-  WalletButtonText: {
-    fontFamily: "josefsans-regular",
-    color: Colors.primaryColor,
-    fontSize: 20,
+    color: 'white'
   },
 });
 

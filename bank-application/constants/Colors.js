@@ -1,5 +1,6 @@
 export default {
-    primaryColor: '#02BD63',
+    primaryColor: '#FFCC00',
+    secondaryColor: '#2b2d2f',
     primaryTint: 'rgba(0, 197, 110, 0.1)',
     grey: 'rgba(0, 0, 0, 0.4)',
     tabGrey: 'rgba(112, 112, 112,0.07)',
