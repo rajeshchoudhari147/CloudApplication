@@ -1,13 +1,10 @@
 import React, { Component } from "react";
-import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { RECEIPTS } from "../data/dummy-data";
+import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { Images } from "../assets/Images";
 import {
-  FlatList,
   Image,
   Modal,
-  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -75,16 +72,6 @@ class ReceiptTile extends Component {
         </View>
 
         <View style={styles.leafContainer}>
-          <Image
-            style={styles.leaf}
-            resizeMode={"contain"}
-            source={Images.leafReceipt}
-          />
-          <Image
-            style={styles.receiptIcon}
-            resizeMode={"contain"}
-            source={this.props.icon}
-          />
           <Text style={styles.leafStore}>{this.props.storeName}</Text>
           <Text style={styles.leafDate}>{this.props.timeStamp}</Text>
           <Text style={styles.leafAmount}>{"$ " + this.props.amount}</Text>
@@ -157,32 +144,13 @@ const styles = StyleSheet.create({
   },
   leafContainer: {
     flex: 1,
-    width: 131.32,
-    height: 162.17,
+    height: 100,
     marginRight: 28,
     marginBottom: 18.92,
     justifyContent: "flex-start",
     alignItems: "center",
-    borderRadius: 120,
-    borderTopLeftRadius: 700,
-    borderTopRightRadius: 700,
-    shadowColor: "grey",
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    //backgroundColor: "white",
-    //borderWidth: 1,
-  },
-  leaf: {
-    flex: 1,
-    width: 131.32,
-    height: 162.17,
-    position: "absolute",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    //borderWidth: 1,
+    backgroundColor: "white",
+    borderWidth: 1,
   },
   receiptIcon: {
     width: 19,

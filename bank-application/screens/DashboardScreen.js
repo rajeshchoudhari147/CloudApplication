@@ -133,7 +133,7 @@ class DashboardScreen extends Component {
             }}
           >
             <View style={styles.textAlign}>
-              <Text style={styles.fontbold}>My recent receipts</Text>
+              <Text style={styles.fontbold}>Recent transactions</Text>
               <Feather
                 name="chevron-right"
                 size={20}
@@ -148,8 +148,7 @@ class DashboardScreen extends Component {
               data={RECEIPTS}
               //data={RECEIPTS.sort((a, b) => a.storeName.localeCompare(b.storeName))}
               renderItem={renderGridItem}
-              numColumns={2}
-              scrollEnabled={false}
+              numColumns={1}
               initialNumToRender={4}
             />
           </View>

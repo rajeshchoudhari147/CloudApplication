@@ -5,7 +5,12 @@ import { StyleSheet, Image, View } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
-import { Feather } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { Images } from "../assets/Images";
 
@@ -23,13 +28,13 @@ import AccountScreen from "../screens/AccountScreen";
 import MyAccountScreen from "../screens/MyAccountScreen";
 
 const DashboardNavigator = createStackNavigator({
-    DashboardNav: {
-      screen: DashboardScreen,
-      navigationOptions: {
-        header: null,
-      },
-    }
-  });
+  DashboardNav: {
+    screen: DashboardScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+});
 
 const WalletNavigator = createStackNavigator({
   Wallet: {
@@ -53,13 +58,13 @@ const WalletNavigator = createStackNavigator({
 });
 
 const ReceiptNavigator = createStackNavigator({
-    MyReceipts: {
-      screen: MyReceiptsScreen,
-      navigationOptions: {
-        header: null,
-      },
-    }
-  });
+  MyReceipts: {
+    screen: MyReceiptsScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+});
 
 const AccountNavigator = createStackNavigator({
   Account: {
@@ -81,24 +86,15 @@ const TabNavigator = createBottomTabNavigator(
     Home: {
       screen: DashboardNavigator,
       navigationOptions: {
-        tabBarIcon: ({ focused }) => {
-          const image = focused ? Images.r_logo : Images.r_icon;
+        tabBarIcon: (tabInfo) => {
           return (
             <View style={styles.tabCircle}>
-              <Image style={styles.brandLogo} source={image} />
-            </View>
-          );
-        },
-      },
-    },
-    WalletNav: {
-      screen: WalletNavigator,
-      navigationOptions: {
-        tabBarIcon: ({ focused }) => {
-          const image = focused ? Images.memberCard : Images.inactiveMember;
-          return (
-            <View style={styles.tabCircle}>
-              <Image style={styles.memberIcon} source={image} />
+              <MaterialCommunityIcons
+                name="home-variant-outline"
+                size={24}
+                style={styles.icon}
+                color={tabInfo.tintColor}
+              />
             </View>
           );
         },
@@ -110,8 +106,25 @@ const TabNavigator = createBottomTabNavigator(
         tabBarIcon: (tabInfo) => {
           return (
             <View style={styles.tabCircle}>
-              <Feather
-                name="layers"
+              <MaterialCommunityIcons
+                name="bank"
+                size={22}
+                style={styles.icon}
+                color={tabInfo.tintColor}
+              />
+            </View>
+          );
+        },
+      },
+    },
+    WalletNav: {
+      screen: WalletNavigator,
+      navigationOptions: {
+        tabBarIcon: (tabInfo) => {
+          return (
+            <View style={styles.tabCircle}>
+              <AntDesign
+                name="creditcard"
                 size={22}
                 style={styles.icon}
                 color={tabInfo.tintColor}
@@ -127,7 +140,7 @@ const TabNavigator = createBottomTabNavigator(
         tabBarIcon: (tabInfo) => {
           return (
             <View style={styles.tabCircle}>
-              <Feather
+              <Entypo
                 name="user"
                 size={22}
                 style={styles.icon}
@@ -183,20 +196,12 @@ const AppNavigator = createSwitchNavigator({
 });
 
 const styles = StyleSheet.create({
-  brandLogo: {
-    width: 13.55,
-    height: 16.77,
-  },
-  memberIcon: {
-    width: 24.08,
-    height: 16,
-  },
   tabCircle: {
-    width: 38,
-    height: 38,
+    width: 40,
+    height: 40,
     borderRadius: 60 / 2,
-    backgroundColor: "white",
-    borderColor: Colors.tabGrey,
+    backgroundColor: Colors.secondaryColor,
+    borderColor: 'white',
     borderWidth: 2.5,
     justifyContent: "center",
     alignItems: "center",

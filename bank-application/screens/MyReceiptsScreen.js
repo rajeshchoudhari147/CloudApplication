@@ -31,31 +31,8 @@ class MyReceiptScreen extends Component {
       isLoading: true,
       receipts: [],
       show: false,
-      showDatePicker: false,
-      sliderValue: 1000,
-      fromDate: new Date(1598051730000),
-      toDate: new Date(1598051730000),
     };
   }
-
-  loadReceipts = async () => {
-    const { data } = RECEIPTS;
-
-    this.setState({ receipts: data, isLoading: false });
-  };
-
-  componentDidMount() {
-    this.setState({ isLoading: true });
-    this.loadReceipts();
-  }
-
-  searchReceipt = (value) => {
-    const filteredReceipts = RECEIPTS.filter((receipt) => {
-      let receiptLowercase = receipt.storeName.toLowerCase();
-      let searchLowercase = value.toLowerCase();
-      return receiptLowercase.indexOf(searchLowercase) > -1;
-    });
-  };
 
   render() {
     const renderGridItem = (itemData) => {
@@ -81,190 +58,14 @@ class MyReceiptScreen extends Component {
       );
     };
 
-    const renderStoreList = (itemData) => {
-      return (
-        <StoreList
-          storeName={itemData.item.storeName}
-          onSelect={() => {
-            this.props.navigation.navigate({
-              routeName: "StoreList",
-              params: {
-                receiptID: itemData.item.id,
-              },
-            });
-          }}
-        />
-      );
-    };
-
-    const renderCategoryList = (itemData) => {
-      return (
-        <StoreList
-          storeName={itemData.item.category}
-          onSelect={() => {
-            this.props.navigation.navigate({
-              routeName: "CategoryList",
-              params: {
-                receiptID: itemData.item.id,
-              },
-            });
-          }}
-        />
-      );
-    };
-
-    
-
     return (
       <View style={styles.outerContainer}>
         <View style={styles.container}>
           <View style={styles.header}>
-            <Text style={styles.headerFont}>My receipts</Text>
+            <Text style={styles.headerFont}>Recent Transactions</Text>
           </View>
         </View>
         <View style={styles.innerContainer}>
-          <Modal
-            animationType={"fade"}
-            transparent={true}
-            visible={this.state.show}
-          >
-            <View style={styles.detail}>
-              <View style={styles.cancelButton}>
-                <View style={styles.filterTitleAlign}>
-                  <Text style={styles.filterTitle}>Filter by:</Text>
-                </View>
-                <TouchableOpacity
-                  style={styles.backButton}
-                  onPress={() => this.setState({ show: false })}
-                >
-                  <MaterialIcons name="cancel" size={22} color={Colors.grey} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.filterContent}>
-                <View style={styles.filterType}>
-                  <View style={styles.buttonView}>
-                    <Image
-                      style={styles.icon}
-                      resizeMode={"contain"}
-                      source={Images.coin}
-                    />
-                    <View style={styles.textAlign}>
-                      <Text style={styles.font}>Price</Text>
-                    </View>
-                    <View style={styles.rightIcon}>
-                      <Text style={styles.font}>$0</Text>
-                      <View style={styles.sliderView}>
-                        <Slider
-                          style={styles.slider}
-                          minimumValue={0}
-                          maximumValue={1000}
-                          step={50}
-                          value={this.state.sliderValue}
-                          onValueChange={(sliderValue) =>
-                            this.setState({ sliderValue })
-                          }
-                          minimumTrackTintColor={Colors.primaryColor}
-                          maximumTrackTintColor={Colors.grey}
-                        />
-                      </View>
-                      <View style={styles.fontUpdateView}>
-                        <Text style={styles.fontUpdate}>
-                          $ {this.state.sliderValue}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.filterType}>
-                  <View style={styles.buttonView}>
-                    <Image
-                      style={styles.icon}
-                      resizeMode={"contain"}
-                      source={Images.date}
-                    />
-                    <View style={styles.textAlign}>
-                      <Text style={styles.font}>Date</Text>
-                    </View>
-                    <View style={styles.rightIcon}>
-                      <Text style={styles.font}>From:</Text>
-                      <TouchableOpacity
-                        onPress={() => {
-                          DateTimePickerScreen;
-                        }}
-                      >
-                        <Text style={styles.inputDate}>Select date</Text>
-                      </TouchableOpacity>
-
-                      <Text style={styles.font}>To:</Text>
-                      <TextInput
-                        placeholder={"Select date"}
-                        style={styles.inputDate}
-                      />
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.filterType}>
-                  <View style={styles.buttonView}>
-                    <Image
-                      style={styles.icon}
-                      resizeMode={"contain"}
-                      source={Images.category}
-                    />
-                    <View style={styles.textAlign}>
-                      <Text style={styles.font}>Category</Text>
-                    </View>
-                    <View style={styles.rightIcon}>
-                      <View style={styles.storeListView}>
-                        <FlatList
-                          keyExtractor={(item) => item.id}
-                          data={RECEIPTS.sort((a, b) =>
-                            a.category.localeCompare(b.category)
-                          )}
-                          renderItem={renderCategoryList}
-                          numColumns={2}
-                          scrollEnabled={false}
-                          ListEmptyComponent={() => (
-                            <Text style={styles.text}>
-                              Categories not found
-                            </Text>
-                          )}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                </View>
-                <View style={[styles.filterType, { marginBottom: 50 }]}>
-                  <View style={styles.buttonView}>
-                    <Image
-                      style={styles.icon}
-                      resizeMode={"contain"}
-                      source={Images.shoppingCart}
-                    />
-                    <View style={styles.textAlign}>
-                      <Text style={styles.font}>Store</Text>
-                    </View>
-                    <View style={styles.rightIcon}>
-                      <View style={styles.storeListView}>
-                        <FlatList
-                          keyExtractor={(item) => item.id}
-                          data={RECEIPTS.sort((a, b) =>
-                            a.storeName.localeCompare(b.storeName)
-                          )}
-                          renderItem={renderStoreList}
-                          numColumns={2}
-                          scrollEnabled={false}
-                          ListEmptyComponent={() => (
-                            <Text style={styles.text}>Stores not found</Text>
-                          )}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </Modal>
-
           <View style={styles.screen}>
             <View style={styles.screenContent}>
               <View style={styles.searchBar}>
@@ -279,37 +80,20 @@ class MyReceiptScreen extends Component {
                     <TextInput
                       placeholder={"Search"}
                       style={styles.text_input}
-                      onChangeText={(value) => this.searchReceipt(value)}
                     />
                   </View>
                 </View>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState({ show: true });
-                  }}
-                >
-                  <MaterialIcons
-                    name="filter-list"
-                    size={35}
-                    style={styles.filterIcon}
-                    color={Colors.grey}
-                  />
-                </TouchableOpacity>
+                
               </View>
             </View>
           </View>
           <View style={styles.listView}>
-            {this.state.isLoading ? (
-              <View>
-                <ActivityIndicator size="large" color={Colors.primaryColor} />
-              </View>
-            ) : null}
             <FlatList
               keyExtractor={(item) => item.id}
               data={RECEIPTS}
               //data={RECEIPTS.sort((a, b) => a.storeName.localeCompare(b.storeName))}
               renderItem={renderGridItem}
-              numColumns={2}
+              numColumns={1}
               ListEmptyComponent={() => (
                 <Text style={styles.text}>No recent receipts found</Text>
               )}
@@ -401,10 +185,12 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   listView: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "flex-start",
+    width: 330,
     paddingLeft: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    height: 562,
     //borderWidth: 1,
   },
   text: {
