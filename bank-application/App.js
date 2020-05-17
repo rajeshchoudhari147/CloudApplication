@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
+import Amplify from 'aws-amplify'
+import config from './amplify/aws-exports'
+
 import AppNavigator from './navigation/AppNavigator';
 
 const fetchFonts = () => {
@@ -15,7 +18,7 @@ const fetchFonts = () => {
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
-
+  Amplify.configure(config)
   if (!fontLoaded) {
     return (
       <AppLoading 
