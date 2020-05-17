@@ -8,7 +8,7 @@ import {
   Text,
   TextInput,
 } from "react-native";
-
+import { withAuthenticator } from 'aws-amplify-react-native';
 import { Images } from "../assets/Images";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -142,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+export default withAuthenticator(SignUpScreen);
