@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "bank-application",
-    "slug": "bank-application",
+    "name": "cloud-application",
+    "slug": "cloud-application",
     "platforms": [
       "ios",
       "android"
