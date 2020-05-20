@@ -7,19 +7,18 @@ import {
   Text,
   TextInput,
 } from "react-native";
-import { Auth } from "aws-amplify";
+
+import Amplify, { Auth } from "aws-amplify";
 import { Images } from "../assets/Images";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 
-class SignInScreen extends Component {
+class ConfirmationCode extends Component {
   constructor() {
     super();
     this.state = {
       username: "",
-      password: "",
       confirmationCode: "",
-      user: {},
     };
   }
 
@@ -29,49 +28,24 @@ class SignInScreen extends Component {
     });
   }
 
-  signIn() {
-    const { username, password } = this.state;
-    Auth.signIn(username, password)
-      .then((user) => {
-        this.setState({ user });
-        console.log("Successful Sign in!");
-      })
-      .catch((err) => console.log("error signing in!: ", err));
-  }
-
   render() {
-    // const signIn = async () => {
-    //   try {
-    //     await Auth.signIn(this.state.username, this.state.password);
-    //     console.log("Successful Sign In");
-    //   } catch (err) {
-    //     return console.log("error signing in!: ", err);
-    //   }
-    // };
-
-    const signIn = async () => {
-      const { username, password } = this.state;
-      Auth.signIn(username, password)
-        .then((user) => {
-          this.setState({ user });
-          console.log("Successful Sign in!");
-        })
-        .catch((err) => console.log("error signing in!: ", err));
+    const onChangeText = (key, value) => {
+      this.props.onSelect;
+      this.setState({
+        [key]: value,
+      });
     };
 
-    const confirmSignIn = async () => {
+    const confirmSignUp = async () => {
       try {
-        await Auth.confirmSignIn(this.state.user, this.state.confirmationCode);
-        console.log("Successful Confirm Sign In");
-        this.props.navigation.navigate({
-          routeName: "Dashboard",
-          params: {
-            name: this.state.name,
-          },
-        });
-        return this.setState({ user });
+        await Auth.confirmSignUp(
+          this.props.username, 
+          this.state.confirmationCode
+        );
+        console.log("Successful Confirm Sign Up");
+        this.props.navigation.navigate("SignIn");
       } catch (err) {
-        return console.log("error confirming signing in!: ", err);
+        return console.log("error confirming signing up!: ", err);
       }
     };
 
@@ -95,30 +69,19 @@ class SignInScreen extends Component {
           </View>
 
           <View style={styles.buttonContainer}>
+            <Text>{this.props.username}</Text>
             <TextInput
-              onChangeText={(value) => this.onChangeText("username", value)}
-              placeholder={"Username"}
-              style={styles.text_input}
-            />
-            <TextInput
-              onChangeText={(value) => this.onChangeText("password", value)}
-              placeholder={"Password"}
-              style={styles.text_input}
-              secureTextEntry={true}
-            />
-            <TouchableOpacity style={styles.button} onPress={signIn.bind(this)}>
-              <Text style={styles.buttonText}>Sign in</Text>
-            </TouchableOpacity>
-            <TextInput
-              onChangeText={(value) => onChangeText("confirmationCode", value)}
+              onChangeText={(value) =>
+                onChangeText("confirmationCode", value)
+              }
               placeholder={"Confirmation Code"}
               style={styles.text_input}
             />
             <TouchableOpacity
               style={styles.button}
-              onPress={confirmSignIn.bind(this)}
+              onPress={confirmSignUp.bind(this)}
             >
-              <Text style={styles.buttonText}>Confirm Sign In</Text>
+              <Text style={styles.buttonText}>Confirm Sign Up</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -205,4 +168,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignInScreen;
+export default ConfirmationCode;

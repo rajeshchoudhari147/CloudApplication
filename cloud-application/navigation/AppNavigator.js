@@ -16,6 +16,7 @@ import { Images } from "../assets/Images";
 
 import IntroScreen from "../screens/IntroScreen";
 import SignUpScreen from "../screens/SignUpScreen";
+import ConfirmationCode from "../screens/ConfirmationCode";
 import SignInScreen from "../screens/SignInScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import SetNewPasswordScreen from "../screens/SetNewPasswordScreen";
@@ -163,6 +164,12 @@ const AppNavigator = createSwitchNavigator({
   },
   SignUp: {
     screen: SignUpScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  ConfirmationCode: {
+    screen: ConfirmationCode,
     navigationOptions: {
       header: null,
     },

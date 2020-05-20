@@ -35,7 +35,7 @@ class SignUpScreen extends Component {
     });
   }
 
-  signUp() {
+  /*signUp() {
     Auth.signUp({
       username: this.state.username,
       password: this.state.password,
@@ -53,9 +53,33 @@ class SignUpScreen extends Component {
     Auth.confirmSignUp(this.state.username, this.state.confirmationCode)
       .then(() => console.log("Successful Confirm Sign Up"))
       .catch((err) => console.log("error confirming signing up!: ", err));
-  }
+    props.navigation.navigate("SignIn");
+  }*/
 
   render() {
+    const signUp = async () => {
+      try {
+        await Auth.signUp({
+          username: this.state.username,
+          password: this.state.password,
+          attributes: {
+            name: this.state.name,
+            email: this.state.email,
+            phone_number: this.state.phone_number,
+          },
+        });
+        console.log("Successful Sign Up");
+        this.props.navigation.navigate({
+          routeName: "ConfirmationCode",
+          params: {
+            username: this.state.username,
+          },
+        });
+      } catch (err) {
+        return console.log("error signing up!: ", err);
+      }
+    };
+
     return (
       <View style={styles.outerContainer}>
         <View style={styles.container}>
@@ -101,13 +125,10 @@ class SignUpScreen extends Component {
               style={styles.text_input}
               secureTextEntry={true}
             />
-            <TouchableOpacity
-              style={styles.button}
-              onPress={this.signUp.bind(this)}
-            >
+            <TouchableOpacity style={styles.button} onPress={signUp.bind(this)}>
               <Text style={styles.buttonText}>Sign up</Text>
             </TouchableOpacity>
-            <TextInput
+            {/* <TextInput
               onChangeText={(value) =>
                 this.onChangeText("confirmationCode", value)
               }
@@ -116,10 +137,10 @@ class SignUpScreen extends Component {
             />
             <TouchableOpacity
               style={styles.button}
-              onPress={this.confirmSignUp.bind(this)}
+              onPress={confirmSignUp.bind(this)}
             >
               <Text style={styles.buttonText}>Confirm Sign Up</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity
               style={styles.fontButton}
@@ -167,9 +188,8 @@ const styles = StyleSheet.create({
   },
   text_input: {
     width: 300,
-    height: 60,
     borderRadius: 10,
-    marginBottom: 29,
+    marginBottom: 10,
     backgroundColor: "white",
     fontFamily: "josefsans-regular",
     fontSize: 18,
@@ -182,7 +202,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: 30,
     flexDirection: "row",
     shadowColor: Colors.shadow,
     shadowOpacity: 0.1,
