@@ -1,5 +1,12 @@
 {
-	"auth": {},
+	"auth": {
+		"cloudapplication5b6f3899": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	},
 	"api": {},
 	"hosting": {},
 	"function": {}

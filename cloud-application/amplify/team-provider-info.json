@@ -11,5 +11,23 @@
             "StackId": "arn:aws:cloudformation:us-east-2:019777421181:stack/amplify-bankapplication-app-150551/963cca20-9a57-11ea-8888-0a22cca2ed82",
             "AmplifyAppId": "d29f8fcu0s4ib3"
         }
+    },
+    "cloud": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-cloudapplication-cloud-152007-authRole",
+            "UnauthRoleArn": "arn:aws:iam::019777421181:role/amplify-cloudapplication-cloud-152007-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::019777421181:role/amplify-cloudapplication-cloud-152007-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "amplify-cloudapplication-cloud-152007-deployment",
+            "UnauthRoleName": "amplify-cloudapplication-cloud-152007-unauthRole",
+            "StackName": "amplify-cloudapplication-cloud-152007",
+            "StackId": "arn:aws:cloudformation:us-east-2:019777421181:stack/amplify-cloudapplication-cloud-152007/94d11a40-9a59-11ea-9fe1-0696b95a38c4",
+            "AmplifyAppId": "d3rp9mg68pmz6k"
+        },
+        "categories": {
+            "auth": {
+                "cloudapplication5b6f3899": {}
+            }
+        }
     }
 }
