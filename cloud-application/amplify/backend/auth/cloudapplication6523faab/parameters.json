@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "cloudapplication5b6f3899_identitypool_5b6f3899",
+    "identityPoolName": "cloudapplication6523faab_identitypool_6523faab",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "clouda5b6f3899",
-    "userPoolName": "cloudapplication5b6f3899_userpool_5b6f3899",
+    "resourceNameTruncated": "clouda6523faab",
+    "userPoolName": "cloudapplication6523faab_userpool_6523faab",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -18,7 +18,9 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "email"
+        "email",
+        "name",
+        "phone_number"
     ],
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": 30,
@@ -28,10 +30,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "clouda5b6f3899_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "clouda6523faab_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "5b6f3899",
-    "resourceName": "cloudapplication5b6f3899",
+    "sharedId": "6523faab",
+    "resourceName": "cloudapplication6523faab",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,9 +48,11 @@
         ]
     },
     "useDefault": "default",
-    "usernameAttributes": [
-        "email"
-    ],
+    "triggers": "{}",
     "userPoolGroupList": [],
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [],
     "dependsOn": []
 }

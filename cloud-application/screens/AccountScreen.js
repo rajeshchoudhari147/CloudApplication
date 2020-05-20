@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   brandLogo: {
-    width: 300,
-    height: 300,
+    width: 100,
+    height: 100,
   },
   screen: {
     flex: 1,

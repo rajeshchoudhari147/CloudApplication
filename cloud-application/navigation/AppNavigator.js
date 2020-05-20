@@ -22,7 +22,6 @@ import SetNewPasswordScreen from "../screens/SetNewPasswordScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 import WalletScreen from "../screens/WalletScreen";
 import CardViewScreen from "../screens/CardViewScreen";
-import BarcodeScanner from "../screens/BarcodeScannerScreen";
 import MyReceiptsScreen from "../screens/MyReceiptsScreen";
 import AccountScreen from "../screens/AccountScreen";
 import MyAccountScreen from "../screens/MyAccountScreen";
@@ -48,13 +47,7 @@ const WalletNavigator = createStackNavigator({
     navigationOptions: {
       header: null,
     },
-  },
-  BarcodeScanner: {
-    screen: BarcodeScanner,
-    navigationOptions: {
-      header: null,
-    },
-  },
+  }
 });
 
 const ReceiptNavigator = createStackNavigator({

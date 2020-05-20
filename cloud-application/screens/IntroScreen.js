@@ -11,7 +11,7 @@ class IntroScreen extends Component {
         <View style={styles.container}>
           <View style={styles.logoContainer}>
             <Image style={styles.brandLogo} source={Images.logo} />
-            <Text style={styles.text}>People's Bank</Text>
+            <Text style={styles.text}>Just To-Do</Text>
           </View>
 
           <View style={styles.buttonContainer}>
@@ -61,8 +61,9 @@ const styles = StyleSheet.create({
     marginBottom: 85,
   },
   brandLogo: {
-    width: 300,
-    height: 300,
+    marginTop: 50,
+    width: 150,
+    height: 150,
   },
   text: {
     color: Colors.primaryColor,

@@ -1,5 +1,5 @@
 export const Images = {
-    logo: require('./images/bank-logo.png'),
+    logo: require('./images/appLogo.png'),
 
     
     small_A: require('./images/appleLogo.png'),

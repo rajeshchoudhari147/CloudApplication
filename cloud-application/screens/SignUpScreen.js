@@ -8,7 +8,8 @@ import {
   Text,
   TextInput,
 } from "react-native";
-import { withAuthenticator } from 'aws-amplify-react-native';
+import Amplify, { Auth } from "aws-amplify";
+
 import { Images } from "../assets/Images";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -19,8 +20,41 @@ class SignUpScreen extends Component {
     super();
     this.state = {
       show: false,
+      name: "",
+      username: "",
+      password: "",
+      email: "",
+      phone_number: "",
+      confirmationCode: "",
     };
   }
+
+  onChangeText(key, value) {
+    this.setState({
+      [key]: value,
+    });
+  }
+
+  signUp() {
+    Auth.signUp({
+      username: this.state.username,
+      password: this.state.password,
+      attributes: {
+        name: this.state.name,
+        email: this.state.email,
+        phone_number: this.state.phone_number,
+      },
+    })
+      .then(() => console.log("Successful Sign up"))
+      .catch((err) => console.log("error signing up!: ", err));
+  }
+
+  confirmSignUp() {
+    Auth.confirmSignUp(this.state.username, this.state.confirmationCode)
+      .then(() => console.log("Successful Confirm Sign Up"))
+      .catch((err) => console.log("error confirming signing up!: ", err));
+  }
+
   render() {
     return (
       <View style={styles.outerContainer}>
@@ -41,25 +75,52 @@ class SignUpScreen extends Component {
           </View>
 
           <View style={styles.buttonContainer}>
-            <TextInput placeholder={"Name"} style={styles.text_input} />
             <TextInput
+              onChangeText={(value) => this.onChangeText("name", value)}
+              placeholder={"Name"}
+              style={styles.text_input}
+            />
+            <TextInput
+              onChangeText={(value) => this.onChangeText("username", value)}
+              placeholder={"Username"}
+              style={styles.text_input}
+            />
+            <TextInput
+              onChangeText={(value) => this.onChangeText("email", value)}
               placeholder={"Email address"}
               style={styles.text_input}
             />
             <TextInput
+              onChangeText={(value) => this.onChangeText("phone_number", value)}
+              placeholder={"Phone Number"}
+              style={styles.text_input}
+            />
+            <TextInput
+              onChangeText={(value) => this.onChangeText("password", value)}
               placeholder={"Password"}
               style={styles.text_input}
               secureTextEntry={true}
             />
-
             <TouchableOpacity
               style={styles.button}
-              onPress={() => {
-                this.setState({ show: true });
-              }}
+              onPress={this.signUp.bind(this)}
             >
               <Text style={styles.buttonText}>Sign up</Text>
             </TouchableOpacity>
+            <TextInput
+              onChangeText={(value) =>
+                this.onChangeText("confirmationCode", value)
+              }
+              placeholder={"Confirmation Code"}
+              style={styles.text_input}
+            />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.confirmSignUp.bind(this)}
+            >
+              <Text style={styles.buttonText}>Confirm Sign Up</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity
               style={styles.fontButton}
               onPress={() => {
@@ -91,7 +152,7 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   icon: {
-    color: Colors.primaryColor
+    color: Colors.primaryColor,
   },
   innerContainer: {
     backgroundColor: Colors.secondaryColor,
@@ -100,13 +161,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   brandLogo: {
-    width: 300,
-    height: 300,
+    marginBottom: 30,
+    width: 100,
+    height: 100,
   },
   text_input: {
     width: 300,
-    height: 65,
-    borderRadius: 30,
+    height: 60,
+    borderRadius: 10,
     marginBottom: 29,
     backgroundColor: "white",
     fontFamily: "josefsans-regular",
@@ -115,9 +177,9 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 300,
-    height: 58,
+    height: 55,
     backgroundColor: Colors.primaryColor,
-    borderRadius: 30,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 10,
@@ -138,8 +200,8 @@ const styles = StyleSheet.create({
     fontFamily: "josefsans-regular",
     fontSize: 18,
     marginBottom: 80,
-    color: 'white'
+    color: "white",
   },
 });
 
-export default withAuthenticator(SignUpScreen);
+export default SignUpScreen;

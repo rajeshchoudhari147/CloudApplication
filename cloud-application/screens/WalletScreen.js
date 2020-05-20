@@ -60,7 +60,7 @@ class WalletScreen extends Component {
           ]}
           onPress={() => {
             this.setState({ show: false });
-            this.props.navigation.navigate("BarcodeScanner");
+            //this.props.navigation.navigate("BarcodeScanner");
           }}
         >
           <Image

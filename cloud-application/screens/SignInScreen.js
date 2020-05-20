@@ -28,8 +28,9 @@ class SignInScreen extends Component {
           </View>
         </View>
         <View style={styles.innerContainer}>
-          <View>
+          <View style={styles.logoContainer}>
             <Image style={styles.brandLogo} source={Images.logo} />
+            <Text style={styles.text}>Just To-Do</Text>
           </View>
 
           <View style={styles.buttonContainer}>
@@ -82,9 +83,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  logoContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
   brandLogo: {
-    width: 300,
-    height: 300,
+    width: 100,
+    height: 100,
+  },
+  text: {
+    color: Colors.primaryColor,
+    fontFamily: "josefsans-italic",
+    fontSize: 35,
+    marginTop: 29,
   },
   text_input: {
     width: 300,
@@ -120,7 +132,7 @@ const styles = StyleSheet.create({
   font: {
     fontFamily: "josefsans-regular",
     fontSize: 18,
-    
+
     color: "white",
   },
 });
