@@ -31,7 +31,9 @@
         },
         "categories": {
             "auth": {
-                "bankapplication111617e2": {}
+                "bankapplication111617e2": {
+                    "hostedUIProviderCreds": "[]"
+                }
             },
             "hosting": {
                 "amplifyhosting": {

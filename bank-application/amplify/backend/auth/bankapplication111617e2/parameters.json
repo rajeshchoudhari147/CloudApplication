@@ -6,30 +6,41 @@
     "autoVerifiedAttributes": [
         "email"
     ],
-    "mfaConfiguration": "OFF",
+    "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
         "SMS Text Message"
     ],
-    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsAuthenticationMessage": "Cloud application access code: {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Your verification code",
-    "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": false,
-    "passwordPolicyMinLength": 8,
-    "passwordPolicyCharacters": [],
+    "emailVerificationSubject": "Cloud application access code: {####}",
+    "emailVerificationMessage": "Cloud application access code: {####}",
+    "defaultPasswordPolicy": true,
+    "passwordPolicyMinLength": "8",
+    "passwordPolicyCharacters": [
+        "Requires Lowercase",
+        "Requires Uppercase",
+        "Requires Numbers",
+        "Requires Symbols"
+    ],
     "requiredAttributes": [
         "email"
     ],
     "userpoolClientGenerateSecret": true,
-    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientRefreshTokenValidity": "60",
     "userpoolClientWriteAttributes": [
+        "name",
         "email"
     ],
     "userpoolClientReadAttributes": [
-        "email"
+        "address",
+        "email",
+        "name",
+        "phone_number",
+        "preferred_username",
+        "profile"
     ],
     "userpoolClientLambdaRole": "bankap111617e2_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": false,
+    "userpoolClientSetAttributes": true,
     "sharedId": "111617e2",
     "resourceName": "bankapplication111617e2",
     "authSelections": "identityPoolAndUserPool",
@@ -45,12 +56,23 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
+    "useDefault": "manual",
     "triggers": "{}",
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+        "cloudApp"
+    ],
     "parentStack": {
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": []
+    "dependsOn": [],
+    "thirdPartyAuth": false,
+    "userPoolGroups": true,
+    "adminQueries": true,
+    "hostedUI": true,
+    "hostedUIDomainName": "cloudapplication",
+    "authProvidersUserPool": [],
+    "hostedUIProviderMeta": "[]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://master.d3tc49o0lyrz7s.amplifyapp.com/\"],\"LogoutURLs\":[\"https://master.d3tc49o0lyrz7s.amplifyapp.com/\"]}",
+    "adminQueryGroup": "admin"
 }
