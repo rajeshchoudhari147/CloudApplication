@@ -16,5 +16,29 @@
                 "bankapplication111617e2": {}
             }
         }
+    },
+    "cloud": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-bankapplication-cloud-114211-authRole",
+            "UnauthRoleArn": "arn:aws:iam::019777421181:role/amplify-bankapplication-cloud-114211-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::019777421181:role/amplify-bankapplication-cloud-114211-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "amplify-bankapplication-cloud-114211-deployment",
+            "UnauthRoleName": "amplify-bankapplication-cloud-114211-unauthRole",
+            "StackName": "amplify-bankapplication-cloud-114211",
+            "StackId": "arn:aws:cloudformation:us-east-2:019777421181:stack/amplify-bankapplication-cloud-114211/229576b0-9a3b-11ea-856e-063c30684966",
+            "AmplifyAppId": "d3nqdwxckk5m1h"
+        },
+        "categories": {
+            "auth": {
+                "bankapplication111617e2": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d3nqdwxckk5m1h",
+                    "type": "cicd"
+                }
+            }
+        }
     }
 }
