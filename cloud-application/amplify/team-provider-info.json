@@ -1,33 +1,15 @@
 {
-    "dev": {
+    "app": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-bankapplication-dev-105548-authRole",
-            "UnauthRoleArn": "arn:aws:iam::019777421181:role/amplify-bankapplication-dev-105548-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::019777421181:role/amplify-bankapplication-dev-105548-authRole",
-            "Region": "ap-southeast-2",
-            "DeploymentBucketName": "amplify-bankapplication-dev-105548-deployment",
-            "UnauthRoleName": "amplify-bankapplication-dev-105548-unauthRole",
-            "StackName": "amplify-bankapplication-dev-105548",
-            "StackId": "arn:aws:cloudformation:ap-southeast-2:019777421181:stack/amplify-bankapplication-dev-105548/26dcbf80-97d9-11ea-8ce2-0609d93c9d3c",
-            "AmplifyAppId": "dd6mfovfs7bwg"
-        },
-        "categories": {
-            "auth": {
-                "bankapplication111617e2": {}
-            }
-        }
-    },
-    "cloud": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-bankapplication-cloud-114211-authRole",
-            "UnauthRoleArn": "arn:aws:iam::019777421181:role/amplify-bankapplication-cloud-114211-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::019777421181:role/amplify-bankapplication-cloud-114211-authRole",
+            "AuthRoleName": "amplify-bankapplication-app-150551-authRole",
+            "UnauthRoleArn": "arn:aws:iam::019777421181:role/amplify-bankapplication-app-150551-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::019777421181:role/amplify-bankapplication-app-150551-authRole",
             "Region": "us-east-2",
-            "DeploymentBucketName": "amplify-bankapplication-cloud-114211-deployment",
-            "UnauthRoleName": "amplify-bankapplication-cloud-114211-unauthRole",
-            "StackName": "amplify-bankapplication-cloud-114211",
-            "StackId": "arn:aws:cloudformation:us-east-2:019777421181:stack/amplify-bankapplication-cloud-114211/229576b0-9a3b-11ea-856e-063c30684966",
-            "AmplifyAppId": "d3nqdwxckk5m1h"
+            "DeploymentBucketName": "amplify-bankapplication-app-150551-deployment",
+            "UnauthRoleName": "amplify-bankapplication-app-150551-unauthRole",
+            "StackName": "amplify-bankapplication-app-150551",
+            "StackId": "arn:aws:cloudformation:us-east-2:019777421181:stack/amplify-bankapplication-app-150551/963cca20-9a57-11ea-8888-0a22cca2ed82",
+            "AmplifyAppId": "d29f8fcu0s4ib3"
         }
     }
 }
