@@ -3,7 +3,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
 import Amplify from 'aws-amplify'
-import config from './amplify/aws-exports'
+import awsmobile from './amplify/aws-exports'
 
 import AppNavigator from './navigation/AppNavigator';
 
@@ -18,7 +18,7 @@ const fetchFonts = () => {
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
-  Amplify.configure(config)
+  Amplify.configure(awsmobile)
   if (!fontLoaded) {
     return (
       <AppLoading 
