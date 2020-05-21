@@ -35,26 +35,26 @@ class SignUpScreen extends Component {
     });
   }
 
-  /*signUp() {
-    Auth.signUp({
-      username: this.state.username,
-      password: this.state.password,
-      attributes: {
-        name: this.state.name,
-        email: this.state.email,
-        phone_number: this.state.phone_number,
-      },
-    })
-      .then(() => console.log("Successful Sign up"))
-      .catch((err) => console.log("error signing up!: ", err));
-  }
+  // signUp() {
+  //   Auth.signUp({
+  //     username: this.state.username,
+  //     password: this.state.password,
+  //     attributes: {
+  //       name: this.state.name,
+  //       email: this.state.email,
+  //       phone_number: this.state.phone_number,
+  //     },
+  //   })
+  //     .then(() => console.log("Successful Sign up"))
+  //     .catch((err) => console.log("error signing up!: ", err));
+  // }
 
-  confirmSignUp() {
-    Auth.confirmSignUp(this.state.username, this.state.confirmationCode)
-      .then(() => console.log("Successful Confirm Sign Up"))
-      .catch((err) => console.log("error confirming signing up!: ", err));
-    props.navigation.navigate("SignIn");
-  }*/
+  // confirmSignUp() {
+  //   Auth.confirmSignUp(this.state.username, this.state.confirmationCode)
+  //     .then(() => console.log("Successful Confirm Sign Up"))
+  //     .catch((err) => console.log("error confirming signing up!: ", err));
+  //   props.navigation.navigate("SignIn");
+  // }
 
   render() {
     const signUp = async () => {
@@ -69,15 +69,20 @@ class SignUpScreen extends Component {
           },
         });
         console.log("Successful Sign Up");
-        this.props.navigation.navigate({
-          routeName: "ConfirmationCode",
-          params: {
-            username: this.state.username,
-          },
-        });
       } catch (err) {
         return console.log("error signing up!: ", err);
       }
+    };
+
+    const confirmSignUp = () => {
+      Auth.confirmSignUp(this.state.username, this.state.confirmationCode)
+        .then(() => {
+          console.log("Successful Confirm Sign Up");
+          this.props.navigation.navigate({
+            routeName: "SignIn",
+          });
+        })
+        .catch((err) => console.log("error confirming signing up!: ", err));
     };
 
     return (
@@ -128,7 +133,7 @@ class SignUpScreen extends Component {
             <TouchableOpacity style={styles.button} onPress={signUp.bind(this)}>
               <Text style={styles.buttonText}>Sign up</Text>
             </TouchableOpacity>
-            {/* <TextInput
+            <TextInput
               onChangeText={(value) =>
                 this.onChangeText("confirmationCode", value)
               }
@@ -140,7 +145,7 @@ class SignUpScreen extends Component {
               onPress={confirmSignUp.bind(this)}
             >
               <Text style={styles.buttonText}>Confirm Sign Up</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.fontButton}

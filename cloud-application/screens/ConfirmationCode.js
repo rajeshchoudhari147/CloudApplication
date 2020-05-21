@@ -29,17 +29,12 @@ class ConfirmationCode extends Component {
   }
 
   render() {
-    const onChangeText = (key, value) => {
-      this.props.onSelect;
-      this.setState({
-        [key]: value,
-      });
-    };
-
     const confirmSignUp = async () => {
       try {
+        this.props.onSelect;
+        this.setState({ username: this.props.username });
         await Auth.confirmSignUp(
-          this.props.username, 
+          this.state.username,
           this.state.confirmationCode
         );
         console.log("Successful Confirm Sign Up");
@@ -72,7 +67,7 @@ class ConfirmationCode extends Component {
             <Text>{this.props.username}</Text>
             <TextInput
               onChangeText={(value) =>
-                onChangeText("confirmationCode", value)
+                this.onChangeText("confirmationCode", value)
               }
               placeholder={"Confirmation Code"}
               style={styles.text_input}

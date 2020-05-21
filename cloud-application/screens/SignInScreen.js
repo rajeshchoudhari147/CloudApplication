@@ -29,15 +29,15 @@ class SignInScreen extends Component {
     });
   }
 
-  signIn() {
-    const { username, password } = this.state;
-    Auth.signIn(username, password)
-      .then((user) => {
-        this.setState({ user });
-        console.log("Successful Sign in!");
-      })
-      .catch((err) => console.log("error signing in!: ", err));
-  }
+  // signIn() {
+  //   const { username, password } = this.state;
+  //   Auth.signIn(username, password)
+  //     .then((user) => {
+  //       this.setState({ user });
+  //       console.log("Successful Sign in!");
+  //     })
+  //     .catch((err) => console.log("error signing in!: ", err));
+  // }
 
   render() {
     // const signIn = async () => {

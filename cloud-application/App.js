@@ -4,6 +4,7 @@ import { AppLoading } from "expo";
 
 import Amplify, { Auth } from "aws-amplify";
 import awsmobile from "./amplify/aws-exports";
+Amplify.configure(awsmobile);
 
 import AppNavigator from "./navigation/AppNavigator";
 
@@ -18,8 +19,6 @@ const fetchFonts = () => {
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
-
-  Amplify.configure(awsmobile);
 
   if (!fontLoaded) {
     return (
