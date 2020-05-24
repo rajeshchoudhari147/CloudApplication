@@ -1,4 +1,4 @@
-import API, { graphqlOperation } from '@aws-amplify/api';
+import API, { graphqlOperation } from "@aws-amplify/api";
 import React, { Component } from "react";
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { RECEIPTS } from "../data/dummy-data";
@@ -21,22 +21,22 @@ class DashboardScreen extends Component {
     super();
     this.state = {
       walletPop: false,
-      task: '', 
-      completed: false
+      task: "",
+      completed: false,
     };
   }
 
   render() {
     addToDo = async () => {
-      if (this.state.task === '' || this.state.completed === false) return;
+      if (this.state.task === "" || this.state.completed === false) return;
       const task = { task: this.state.task, completed: this.state.completed };
       try {
         const tasks = [...this.state.tasks, task];
-        this.setState({ tasks, task: '', completed: false });
+        this.setState({ tasks, task: "", completed: false });
         await API.graphql(graphqlOperation(AddToDo, task));
-        console.log('success');
+        console.log("success");
       } catch (err) {
-        console.log('error: ', err);
+        console.log("error: ", err);
       }
     };
     const renderGridItem = (itemData) => {
@@ -67,101 +67,34 @@ class DashboardScreen extends Component {
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.headerFont}>Hi Andrew,</Text>
-            <Text style={styles.font}>
-              Scan your card after purchases to save your receipt.
-            </Text>
+            <Text style={styles.font}>.</Text>
           </View>
         </View>
         <View style={styles.innerContainer}>
-          <Modal
-            animationType={"fade"}
-            transparent={true}
-            visible={this.state.walletPop}
-          >
-            <View style={styles.detail}>
-              <View style={styles.cancelButton}>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState({ walletPop: false });
-                  }}
-                >
-                  <MaterialIcons
-                    name="cancel"
-                    size={30}
-                    style={styles.backButton}
+          <View style={styles.screen}>
+            <View style={styles.screenContent}>
+              <View style={styles.searchBar}>
+                <View style={styles.search}>
+                  <Ionicons
+                    name="ios-search"
+                    size={35}
+                    style={styles.searchIcon}
                     color={Colors.grey}
                   />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.walletContent}>
-                <Text style={styles.walletTitle}>Add To Wallet</Text>
-                <Text style={styles.walletText}>
-                  Add your 1card into your wallet
-                </Text>
-                <Image
-                  style={styles.walletIcon}
-                  resizeMode={"contain"}
-                  source={
-                    Platform.OS === "ios" ? Images.wallet : Images.GWallet
-                  }
-                />
-                <TouchableOpacity
-                  style={styles.walletButton}
-                  onPress={() => {
-                    this.setState({ walletPop: false });
-                  }}
-                >
-                  <Text style={styles.WalletButtonText}>Add</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
-          <View style={styles.brandCard}>
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({ walletPop: true });
-              }}
-            >
-              <View style={styles.brandCardContent}>
-                <View style={styles.brandCardAlign}>
-                  <Image
-                    style={styles.barcode}
-                    resizeMode={"cover"}
-                    source={Images.barcode}
-                  />
-                  <Image
-                    style={styles.wallet}
-                    resizeMode={"contain"}
-                    source={
-                      Platform.OS === "ios" ? Images.wallet : Images.GWallet
-                    }
-                  />
+                  <View style={styles.textInputAlign}>
+                    <TextInput
+                      placeholder={"Search"}
+                      style={styles.text_input}
+                    />
+                  </View>
                 </View>
-                <Text style={styles.barcodeText}>123456789</Text>
               </View>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            style={styles.buttonView}
-            onPress={() => {
-              this.props.navigation.navigate("MyReceipts");
-            }}
-          >
-            <View style={styles.textAlign}>
-              <Text style={styles.fontbold}>Recent transactions</Text>
-              <Feather
-                name="chevron-right"
-                size={20}
-                style={styles.rightIcon}
-                color={Colors.primaryColor}
-              />
             </View>
-          </TouchableOpacity>
+          </View>
           <View style={styles.listView}>
             <FlatList
               keyExtractor={(item, index) => item.id}
               data={RECEIPTS}
-              //data={RECEIPTS.sort((a, b) => a.storeName.localeCompare(b.storeName))}
               renderItem={renderGridItem}
               numColumns={1}
               initialNumToRender={4}
