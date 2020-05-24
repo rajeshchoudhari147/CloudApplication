@@ -7,14 +7,12 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@aws-amplify/core": "^3.2.7",
     "@react-native-community/masked-view": "0.1.6",
     "@react-native-community/netinfo": "^5.5.1",
     "@react-native-community/slider": "^2.0.9",
     "@react-navigation/native": "^5.1.4",
-    "amazon-cognito-identity-js": "^4.2.4",
-    "aws-amplify": "^3.0.11",
-    "aws-amplify-react-native": "^4.1.2",
+    "aws-amplify": "^3.0.12",
+    "aws-amplify-react-native": "^4.2.0",
     "expo": "^37.0.7",
     "expo-constants": "^9.0.0",
     "expo-font": "^8.1.1",
