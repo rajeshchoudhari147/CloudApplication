@@ -46,10 +46,6 @@
 					]
 				}
 			]
-		},
-		"s3CloudApp": {
-			"service": "S3",
-			"providerPlugin": "awscloudformation"
 		}
 	},
 	"analytics": {
