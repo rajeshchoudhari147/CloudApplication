@@ -109,7 +109,7 @@ class SignInScreen extends Component {
             <TouchableOpacity style={styles.button} onPress={signIn.bind(this)}>
               <Text style={styles.buttonText}>Sign in</Text>
             </TouchableOpacity>
-            {/* <TextInput
+            <TextInput
               onChangeText={(value) => onChangeText("confirmationCode", value)}
               placeholder={"Confirmation Code"}
               style={styles.text_input}
@@ -119,7 +119,7 @@ class SignInScreen extends Component {
               onPress={confirmSignIn.bind(this)}
             >
               <Text style={styles.buttonText}>Confirm Sign In</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
         </View>
       </View>
