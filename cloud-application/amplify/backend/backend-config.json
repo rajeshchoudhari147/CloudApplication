@@ -24,8 +24,34 @@
 		}
 	},
 	"hosting": {},
-	"function": {},
-	"storage": {},
+	"function": {
+		"S3Trigger27d9e13d": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true
+		}
+	},
+	"storage": {
+		"files": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "S3Trigger27d9e13d",
+					"attributes": [
+						"Name",
+						"Arn",
+						"LambdaExecutionRole"
+					]
+				}
+			]
+		},
+		"s3CloudApp": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		}
+	},
 	"analytics": {
 		"cloudapplication": {
 			"service": "Pinpoint",
