@@ -1,6 +1,6 @@
 {
     "identityPoolName": "cloudapplication6523faab_identitypool_6523faab",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "clouda6523faab",
     "userPoolName": "cloudapplication6523faab_userpool_6523faab",
     "autoVerifiedAttributes": [
