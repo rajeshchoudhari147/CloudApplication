@@ -6,52 +6,7 @@
 			"dependsOn": []
 		}
 	},
-	"api": {
-		"graphql": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authcloudapplication6523faab"
-						}
-					}
-				}
-			}
-		}
-	},
+	"api": {},
 	"hosting": {},
-	"function": {
-		"S3Trigger27d9e13d": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true
-		}
-	},
-	"storage": {
-		"files": {
-			"service": "S3",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "S3Trigger27d9e13d",
-					"attributes": [
-						"Name",
-						"Arn",
-						"LambdaExecutionRole"
-					]
-				}
-			]
-		}
-	},
-	"analytics": {
-		"cloudapplication": {
-			"service": "Pinpoint",
-			"providerPlugin": "awscloudformation"
-		}
-	}
+	"function": {}
 }
