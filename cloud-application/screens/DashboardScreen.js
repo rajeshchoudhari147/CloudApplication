@@ -1,3 +1,4 @@
+import API, { graphqlOperation } from '@aws-amplify/api';
 import React, { Component } from "react";
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { RECEIPTS } from "../data/dummy-data";
@@ -20,10 +21,24 @@ class DashboardScreen extends Component {
     super();
     this.state = {
       walletPop: false,
+      task: '', 
+      completed: false
     };
   }
 
   render() {
+    addToDo = async () => {
+      if (this.state.task === '' || this.state.completed === false) return;
+      const task = { task: this.state.task, completed: this.state.completed };
+      try {
+        const tasks = [...this.state.tasks, task];
+        this.setState({ tasks, task: '', completed: false });
+        await API.graphql(graphqlOperation(AddToDo, task));
+        console.log('success');
+      } catch (err) {
+        console.log('error: ', err);
+      }
+    };
     const renderGridItem = (itemData) => {
       return (
         <ReceiptTile

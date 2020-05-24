@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 
-import Amplify, { Auth } from "aws-amplify";
-import awsmobile from "./amplify/aws-exports";
-Amplify.configure(awsmobile);
+import Amplify from '@aws-amplify/core';
+import config from './aws-exports';
+Amplify.configure(config);
 
 import AppNavigator from "./navigation/AppNavigator";
 

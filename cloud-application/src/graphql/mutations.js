@@ -1,6 +1,15 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
-
+const AddTask = `
+    mutation ($task: String! $completed: Boolean!) {
+      createToDo(input: {
+        task: $task
+        completed: $completed
+      }) {
+        id task completed
+      }
+    }
+    `;
 export const createTodo = /* GraphQL */ `
   mutation CreateTodo(
     $input: CreateTodoInput!
