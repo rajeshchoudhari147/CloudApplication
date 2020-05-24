@@ -55,6 +55,12 @@ class SignInScreen extends Component {
         .then((user) => {
           this.setState({ user });
           console.log("Successful Sign in!");
+          this.props.navigation.navigate({
+            routeName: "Dashboard",
+            params: {
+              name: this.state.name,
+            },
+          });
         })
         .catch((err) => console.log("error signing in!: ", err));
     };
