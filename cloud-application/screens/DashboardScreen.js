@@ -1,4 +1,3 @@
-import API, { graphqlOperation } from "@aws-amplify/api";
 import React, { Component } from "react";
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { RECEIPTS } from "../data/dummy-data";
@@ -11,6 +10,7 @@ import {
   Modal,
   Platform,
   StyleSheet,
+  TextInput,
   Text,
   TouchableOpacity,
   View,
@@ -27,18 +27,6 @@ class DashboardScreen extends Component {
   }
 
   render() {
-    addToDo = async () => {
-      if (this.state.task === "" || this.state.completed === false) return;
-      const task = { task: this.state.task, completed: this.state.completed };
-      try {
-        const tasks = [...this.state.tasks, task];
-        this.setState({ tasks, task: "", completed: false });
-        await API.graphql(graphqlOperation(AddToDo, task));
-        console.log("success");
-      } catch (err) {
-        console.log("error: ", err);
-      }
-    };
     const renderGridItem = (itemData) => {
       return (
         <ReceiptTile
@@ -262,6 +250,40 @@ const styles = StyleSheet.create({
   },
   rightIcon: {
     marginLeft: 31,
+  },
+  screen: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    backgroundColor: "white",
+    height: 48,
+    marginBottom: 82,
+    marginLeft: 29,
+    marginRight: 29,
+  },
+  screenContent: {
+    flex: 1,
+    height: 100,
+  },
+  searchBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  search: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 9,
+    borderWidth: 1,
+    borderColor: Colors.grey,
+    borderRadius: 10,
+    padding: 2,
+  },
+  textInputAlign: {
+    flex: 1,
+    alignItems: "flex-start",
   },
   listView: {
     flex: 1,
