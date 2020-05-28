@@ -81,14 +81,16 @@ class DashboardScreen extends Component {
   async componentDidMount() {
     try {
       const user = await Auth.currentAuthenticatedUser();
+      //console.log(user);
       this.setState({ user: user });
-      const restData = await API.get("lambdafunction", "/tasks");
-      this.setState({ tasks: restData });
+      const restData = await API.get("lambdaAPI", "/tasks");
+      // this.setState({ tasks: restData });
+      //console.log("Lambda Function: ", restData);
       const graphqldata = await API.graphql(graphqlOperation(ListTasks));
       console.log("graphqldata:", graphqldata);
       this.setState({ tasks: graphqldata.data.listTasks.items });
     } catch (err) {
-      console.log("error: ", err);
+      console.log("Component Did Mount Error: ", err);
     }
   }
 
@@ -104,7 +106,7 @@ class DashboardScreen extends Component {
     try {
       Analytics.record({
         name: "Task Added",
-        attributes: { username: this.state.user.username },
+        attributes: { name: this.state.user.username },
       });
       await API.graphql(graphqlOperation(AddTask, task));
       console.log("Task created successfully");
@@ -118,8 +120,7 @@ class DashboardScreen extends Component {
       <View style={styles.outerContainer}>
         <View style={styles.container}>
           <View style={styles.header}>
-            <Text style={styles.headerFont}>Hi {this.state.user}</Text>
-            <Text style={styles.font}>.</Text>
+            <Text style={styles.headerFont}>Hi {this.state.user.username},</Text>
           </View>
         </View>
         <View style={styles.innerContainer}>
@@ -156,6 +157,7 @@ class DashboardScreen extends Component {
             </View>
           </View>
           <View style={styles.listView}>
+            {/* <Text>{this.state.tasks.task}</Text> */}
             {this.state.tasks.map((task, index) => (
               <View key={index} style={styles.taskView}>
                 <Text style={styles.title}>{task.task}</Text>

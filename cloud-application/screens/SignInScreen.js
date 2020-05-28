@@ -7,7 +7,7 @@ import {
   Text,
   TextInput,
 } from "react-native";
-import { Auth } from "aws-amplify";
+import { Auth, Analytics } from "aws-amplify";
 import { Images } from "../assets/Images";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
@@ -18,8 +18,13 @@ class SignInScreen extends Component {
     this.state = {
       username: "",
       password: "",
-      user: {},
+      // user: {},
     };
+  }
+
+  async componentDidMount() {
+    const user = await Auth.currentAuthenticatedUser()
+    this.setState({ user })
   }
 
   onChangeText(key, value) {
@@ -32,9 +37,12 @@ class SignInScreen extends Component {
     const signIn = async () => {
       const { username, password } = this.state;
       Auth.signIn(username, password)
-        .then((user) => {
-          this.setState({ user });
-          console.log(this.state.user);
+        .then(() => {
+          Analytics.record({
+            name: "Signed In",
+            attributes: { username: this.state.user.username }
+          })
+
           console.log("Successful Sign in!");
           this.props.navigation.navigate("Dashboard");
         })
