@@ -6,7 +6,56 @@
 			"dependsOn": []
 		}
 	},
-	"api": {},
+	"api": {
+		"graphql": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"authConfig": {
+					"additionalAuthenticationProviders": [],
+					"defaultAuthentication": {
+						"authenticationType": "API_KEY",
+						"apiKeyConfig": {
+							"description": "graphqlAPI",
+							"apiKeyExpirationDays": "60"
+						}
+					}
+				}
+			}
+		},
+		"lambdaAPI": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "lambdafunction",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
+		}
+	},
 	"hosting": {},
-	"function": {}
+	"function": {
+		"lambdafunction": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda"
+		}
+	},
+	"analytics": {
+		"analysisCloud": {
+			"service": "Pinpoint",
+			"providerPlugin": "awscloudformation"
+		}
+	},
+	"storage": {
+		"s3cloud": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		}
+	}
 }

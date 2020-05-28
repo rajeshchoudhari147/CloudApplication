@@ -82,7 +82,7 @@ class DashboardScreen extends Component {
     try {
       const user = await Auth.currentAuthenticatedUser();
       this.setState({ user: user });
-      const restData = await API.get('lambdafunction', '/tasks');
+      const restData = await API.get("lambdafunction", "/tasks");
       this.setState({ tasks: restData });
       const graphqldata = await API.graphql(graphqlOperation(ListTasks));
       console.log("graphqldata:", graphqldata);
@@ -118,7 +118,7 @@ class DashboardScreen extends Component {
       <View style={styles.outerContainer}>
         <View style={styles.container}>
           <View style={styles.header}>
-            <Text style={styles.headerFont}>Hi Andrew,</Text>
+            <Text style={styles.headerFont}>Hi {this.state.user}</Text>
             <Text style={styles.font}>.</Text>
           </View>
         </View>

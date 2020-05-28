@@ -1,0 +1,34 @@
+{
+    "paths": [
+        {
+            "name": "/tasks",
+            "lambdaFunction": "lambdafunction",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "lambdaAPI",
+    "apiName": "lambdaAPI",
+    "functionArns": [
+        {
+            "lambdaFunction": "lambdafunction"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-cloudapplication-cloud-152007-authRole",
+        "unAuthRoleName": "amplify-cloudapplication-cloud-152007-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "lambdafunction",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+    "appName": "analysisCloud",
+    "roleName": "pinpointLambdaRolec3690afe",
+    "cloudformationPolicyName": "cloudformationPolicyc3690afe",
+    "cloudWatchPolicyName": "cloudWatchPolicyc3690afe",
+    "pinpointPolicyName": "pinpointPolicyc3690afe",
+    "authPolicyName": "pinpoint_amplify_c3690afe",
+    "unauthPolicyName": "pinpoint_amplify_c3690afe",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}
