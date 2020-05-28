@@ -18,7 +18,6 @@ class SignInScreen extends Component {
     this.state = {
       username: "",
       password: "",
-      confirmationCode: "",
       user: {},
     };
   }
@@ -28,57 +27,18 @@ class SignInScreen extends Component {
       [key]: value,
     });
   }
-
-  // signIn() {
-  //   const { username, password } = this.state;
-  //   Auth.signIn(username, password)
-  //     .then((user) => {
-  //       this.setState({ user });
-  //       console.log("Successful Sign in!");
-  //     })
-  //     .catch((err) => console.log("error signing in!: ", err));
-  // }
-
+  
   render() {
-    // const signIn = async () => {
-    //   try {
-    //     await Auth.signIn(this.state.username, this.state.password);
-    //     console.log("Successful Sign In");
-    //   } catch (err) {
-    //     return console.log("error signing in!: ", err);
-    //   }
-    // };
-
     const signIn = async () => {
       const { username, password } = this.state;
       Auth.signIn(username, password)
         .then((user) => {
           this.setState({ user });
+          console.log(this.state.user);
           console.log("Successful Sign in!");
-          this.props.navigation.navigate({
-            routeName: "Dashboard",
-            params: {
-              name: this.state.name,
-            },
-          });
+          this.props.navigation.navigate("Dashboard");
         })
         .catch((err) => console.log("error signing in!: ", err));
-    };
-
-    const confirmSignIn = async () => {
-      try {
-        await Auth.confirmSignIn(this.state.user, this.state.confirmationCode);
-        console.log("Successful Confirm Sign In");
-        this.props.navigation.navigate({
-          routeName: "Dashboard",
-          params: {
-            name: this.state.name,
-          },
-        });
-        return this.setState({ user });
-      } catch (err) {
-        return console.log("error confirming signing in!: ", err);
-      }
     };
 
     return (
@@ -112,19 +72,10 @@ class SignInScreen extends Component {
               style={styles.text_input}
               secureTextEntry={true}
             />
-            <TouchableOpacity style={styles.button} onPress={signIn.bind(this)}>
-              <Text style={styles.buttonText}>Sign in</Text>
-            </TouchableOpacity>
-            <TextInput
-              onChangeText={(value) => onChangeText("confirmationCode", value)}
-              placeholder={"Confirmation Code"}
-              style={styles.text_input}
-            />
-            <TouchableOpacity
-              style={styles.button}
-              onPress={confirmSignIn.bind(this)}
+            <TouchableOpacity style={styles.button} 
+            onPress={signIn.bind(this)}
             >
-              <Text style={styles.buttonText}>Confirm Sign In</Text>
+              <Text style={styles.buttonText}>Sign in</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -168,7 +119,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.primaryColor,
-    fontFamily: "josefsans-italic",
+    fontFamily: "josefsans-regular",
     fontSize: 35,
     marginTop: 29,
   },

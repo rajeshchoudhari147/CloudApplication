@@ -35,27 +35,6 @@ class SignUpScreen extends Component {
     });
   }
 
-  // signUp() {
-  //   Auth.signUp({
-  //     username: this.state.username,
-  //     password: this.state.password,
-  //     attributes: {
-  //       name: this.state.name,
-  //       email: this.state.email,
-  //       phone_number: this.state.phone_number,
-  //     },
-  //   })
-  //     .then(() => console.log("Successful Sign up"))
-  //     .catch((err) => console.log("error signing up!: ", err));
-  // }
-
-  // confirmSignUp() {
-  //   Auth.confirmSignUp(this.state.username, this.state.confirmationCode)
-  //     .then(() => console.log("Successful Confirm Sign Up"))
-  //     .catch((err) => console.log("error confirming signing up!: ", err));
-  //   props.navigation.navigate("SignIn");
-  // }
-
   render() {
     const signUp = async () => {
       try {

@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     marginLeft: 41,
   },
   headerFont: {
-    fontFamily: "josefsans-bold",
+    fontFamily: "josefsans-regular",
     fontSize: 19,
     color: 'white'
   },
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   versionFont: {
-    fontFamily: "josefsans-bold",
+    fontFamily: "josefsans-regular",
     fontSize: 15,
     color: Colors.primaryColor,
     marginBottom: 21,

@@ -1,18 +1,15 @@
 import React from "react";
 
-import { StyleSheet, Image, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import {
-  AntDesign,
   Entypo,
-  Feather,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
-import { Images } from "../assets/Images";
 
 import IntroScreen from "../screens/IntroScreen";
 import SignUpScreen from "../screens/SignUpScreen";
@@ -21,9 +18,6 @@ import SignInScreen from "../screens/SignInScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import SetNewPasswordScreen from "../screens/SetNewPasswordScreen";
 import DashboardScreen from "../screens/DashboardScreen";
-import WalletScreen from "../screens/WalletScreen";
-import CardViewScreen from "../screens/CardViewScreen";
-import MyReceiptsScreen from "../screens/MyReceiptsScreen";
 import AccountScreen from "../screens/AccountScreen";
 import MyAccountScreen from "../screens/MyAccountScreen";
 
@@ -31,46 +25,23 @@ const DashboardNavigator = createStackNavigator({
   DashboardNav: {
     screen: DashboardScreen,
     navigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
 });
 
-const WalletNavigator = createStackNavigator({
-  Wallet: {
-    screen: WalletScreen,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  CardView: {
-    screen: CardViewScreen,
-    navigationOptions: {
-      header: null,
-    },
-  }
-});
-
-const ReceiptNavigator = createStackNavigator({
-  MyReceipts: {
-    screen: MyReceiptsScreen,
-    navigationOptions: {
-      header: null,
-    },
-  },
-});
 
 const AccountNavigator = createStackNavigator({
   Account: {
     screen: AccountScreen,
     navigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
   ManageAccount: {
     screen: MyAccountScreen,
     navigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
 });
@@ -86,40 +57,6 @@ const TabNavigator = createBottomTabNavigator(
               <MaterialCommunityIcons
                 name="home-variant-outline"
                 size={24}
-                style={styles.icon}
-                color={tabInfo.tintColor}
-              />
-            </View>
-          );
-        },
-      },
-    },
-    Receipts: {
-      screen: ReceiptNavigator,
-      navigationOptions: {
-        tabBarIcon: (tabInfo) => {
-          return (
-            <View style={styles.tabCircle}>
-              <MaterialCommunityIcons
-                name="bank"
-                size={22}
-                style={styles.icon}
-                color={tabInfo.tintColor}
-              />
-            </View>
-          );
-        },
-      },
-    },
-    WalletNav: {
-      screen: WalletNavigator,
-      navigationOptions: {
-        tabBarIcon: (tabInfo) => {
-          return (
-            <View style={styles.tabCircle}>
-              <AntDesign
-                name="creditcard"
-                size={22}
                 style={styles.icon}
                 color={tabInfo.tintColor}
               />
@@ -159,37 +96,37 @@ const AppNavigator = createSwitchNavigator({
   Main: {
     screen: IntroScreen,
     navigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
   SignUp: {
     screen: SignUpScreen,
     navigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
   ConfirmationCode: {
     screen: ConfirmationCode,
     navigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
   SignIn: {
     screen: SignInScreen,
     navigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
   ForgotPassword: {
     screen: ForgotPasswordScreen,
     navigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
   SetNewPass: {
     screen: SetNewPasswordScreen,
     navigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
   Dashboard: TabNavigator,

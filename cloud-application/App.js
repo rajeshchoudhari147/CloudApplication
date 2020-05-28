@@ -2,18 +2,15 @@ import React, { useState } from "react";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 
-import Amplify from 'aws-amplify';
-import awsmobile from './amplify/aws-exports';
-Amplify.configure(awsmobile);
-
 import AppNavigator from "./navigation/AppNavigator";
+
+import Amplify from 'aws-amplify'
+import awsmobile from './amplify/aws-exports'
+Amplify.configure(awsmobile)
 
 const fetchFonts = () => {
   return Font.loadAsync({
     "josefsans-regular": require("./assets/fonts/JosefinSans-Regular.ttf"),
-    "josefsans-thin": require("./assets/fonts/JosefinSans-Thin.ttf"),
-    "josefsans-bold": require("./assets/fonts/JosefinSans-Bold.ttf"),
-    "josefsans-italic": require("./assets/fonts/JosefinSans-Italic.ttf"),
   });
 };
 

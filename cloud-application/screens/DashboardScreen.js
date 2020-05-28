@@ -1,55 +1,119 @@
-import React, { Component } from "react";
-import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { RECEIPTS } from "../data/dummy-data";
+import { API, graphqlOperation, Analytics, Auth } from "aws-amplify";
+import React, { Component, useState } from "react";
+import { Ionicons, Octicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
-import { Images } from "../assets/Images";
-import ReceiptTile from "../components/ReceiptTile";
 import {
-  FlatList,
-  Image,
-  Modal,
   Platform,
   StyleSheet,
-  TextInput,
   Text,
-  TouchableOpacity,
+  TextInput,
   View,
+  TouchableOpacity,
 } from "react-native";
 
+const ListTasks = `
+    query {
+      listTasks {
+        items {
+          id 
+          task 
+          completed
+        }
+      }
+    }
+    `;
+const AddTask = `
+    mutation ($task: String! $completed: Boolean!) {
+      createTask(input: {
+        task: $task
+        completed: $completed
+      }) {
+        id 
+        task 
+        completed
+      }
+    }
+    `;
+
+// class DashboardScreen extends Component {
+//   constructor() {
+//     super();
+//     this.state = {
+//       task: "",
+//       completed: false,
+//       listOfTasks: [],
+//     };
+//   }
+//   async componentDidMount() {
+//     try {
+//       const listOfTasks = await API.graphql(graphqlOperation(ListTasks));
+//       console.log("listOfTasks: ", listOfTasks);
+//       this.setState({ listOfTasks: listOfTasks.data.listTasks.items });
+//     } catch (err) {
+//       console.log("error: ", err);
+//     }
+//   }
+//   addTask = async () => {
+//     if (this.state.task === "" || this.state.completed === false) return;
+//     const listOfTask = {
+//       task: this.state.task,
+//       completed: this.state.completed,
+//     };
+//     try {
+//       const listOfTasks = [...this.state.listOfTasks, listOfTask];
+//       this.setState({ listOfTasks, task: "", completed: false });
+//       console.log("listOfTasks: ", listOfTasks);
+//       await API.graphql(graphqlOperation(AddToDo, listOfTask));
+//       console.log("success.. tasks added");
+//     } catch (err) {
+//       console.log("error: ", err);
+//     }
+//   };
+
 class DashboardScreen extends Component {
-  constructor() {
-    super();
-    this.state = {
-      walletPop: false,
-      task: "",
-      completed: false,
-    };
+  state = {
+    task: "",
+    completed: "false",
+    tasks: [],
+    user: {},
+  };
+
+  async componentDidMount() {
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      this.setState({ user: user });
+      const restData = await API.get('lambdafunction', '/tasks');
+      this.setState({ tasks: restData });
+      const graphqldata = await API.graphql(graphqlOperation(ListTasks));
+      console.log("graphqldata:", graphqldata);
+      this.setState({ tasks: graphqldata.data.listTasks.items });
+    } catch (err) {
+      console.log("error: ", err);
+    }
   }
 
-  render() {
-    const renderGridItem = (itemData) => {
-      return (
-        <ReceiptTile
-          icon={itemData.item.icon}
-          storeLogo={itemData.item.storeLogo}
-          storeName={itemData.item.storeName}
-          timeStamp={itemData.item.timeStamp}
-          amount={itemData.item.amount}
-          color={itemData.item.color}
-          barcode={itemData.item.barcode}
-          barcodeNumber={itemData.item.barcodeNumber}
-          onSelect={() => {
-            this.props.navigation.navigate({
-              routeName: "ReceiptTile",
-              params: {
-                receiptID: itemData.item.id,
-              },
-            });
-          }}
-        />
-      );
-    };
+  onChangeText = (key, val) => {
+    this.setState({ [key]: val });
+  };
 
+  AddTask = async () => {
+    const task = this.state;
+    if (task.task === "" || task.completed === "false") return;
+    const tasks = [...this.state.tasks, task];
+    this.setState({ tasks, task: "", completed: "false" });
+    try {
+      Analytics.record({
+        name: "Task Added",
+        attributes: { username: this.state.user.username },
+      });
+      await API.graphql(graphqlOperation(AddTask, task));
+      console.log("Task created successfully");
+    } catch (err) {
+      console.log("Error creating task...", err);
+    }
+  };
+
+  render() {
     return (
       <View style={styles.outerContainer}>
         <View style={styles.container}>
@@ -63,34 +127,50 @@ class DashboardScreen extends Component {
             <View style={styles.screenContent}>
               <View style={styles.searchBar}>
                 <View style={styles.search}>
-                  <Ionicons
-                    name="ios-search"
+                  <Octicons
+                    name="tasklist"
                     size={35}
                     style={styles.searchIcon}
                     color={Colors.grey}
                   />
                   <View style={styles.textInputAlign}>
                     <TextInput
-                      placeholder={"Search"}
+                      placeholder={"Enter your task here..."}
                       style={styles.text_input}
+                      onChangeText={(task) => {
+                        this._changeTask(task);
+                        this.setState({ completed: false });
+                      }}
                     />
                   </View>
                 </View>
+                <TouchableOpacity onPress={this.AddTask}>
+                  <Ionicons
+                    name="md-add"
+                    size={35}
+                    style={styles.filterIcon}
+                    color={Colors.grey}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </View>
           <View style={styles.listView}>
-            <FlatList
-              keyExtractor={(item, index) => item.id}
-              data={RECEIPTS}
-              renderItem={renderGridItem}
-              numColumns={1}
-              initialNumToRender={4}
-            />
+            {this.state.tasks.map((task, index) => (
+              <View key={index} style={styles.taskView}>
+                <Text style={styles.title}>{task.task}</Text>
+              </View>
+            ))}
           </View>
         </View>
       </View>
     );
+  }
+
+  _changeTask(task) {
+    this.setState({
+      task: task,
+    });
   }
 }
 
@@ -101,7 +181,7 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "white",
-    marginTop: 41,
+    marginTop: 35,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
@@ -110,7 +190,7 @@ const styles = StyleSheet.create({
     marginLeft: 41,
   },
   headerFont: {
-    fontFamily: "josefsans-bold",
+    fontFamily: "josefsans-regular",
     fontSize: 19,
   },
   font: {
@@ -123,133 +203,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "flex-start",
     alignItems: "center",
-  },
-  brandCard: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    height: 161,
-    marginLeft: 41,
-    marginRight: 41,
-    marginTop: 33,
-    marginBottom: 37,
-    borderWidth: 1,
-    borderRadius: 15,
-    backgroundColor: "white",
-    borderColor: Colors.primaryColor,
-    shadowColor: "grey",
-    shadowRadius: 10,
-    shadowOpacity: 0.5,
-    ...Platform.select({ android: { elevation: 8 } }),
-    backgroundColor: "white",
-  },
-  brandCardContent: {
-    flex: 1,
-    alignItems: "center",
-  },
-  brandCardAlign: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "flex-start",
-  },
-  barcode: {
-    width: 206,
-    height: 108,
-    marginLeft: 46,
-    marginTop: 20,
-    borderColor: Colors.grey,
-    //borderWidth: 1,
-  },
-  wallet: {
-    width: 27,
-    height: 27,
-    marginTop: 17,
-    marginRight: 9,
-    marginLeft: 6,
-  },
-  barcodeText: {
-    fontFamily: "josefsans-regular",
-    fontSize: 16,
-    marginTop: 6.67,
-    alignItems: "center",
-  },
-  detail: {
-    backgroundColor: "#00000066",
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  cancelButton: {
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    backgroundColor: "white",
-    marginTop: 41,
-    paddingRight: 15,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-  },
-  backButton: {
-    marginTop: 18,
-    marginLeft: 30,
-  },
-  walletContent: {
-    backgroundColor: "#ffffff",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
-  },
-  walletTitle: {
-    fontFamily: "josefsans-bold",
-    fontSize: 24,
-    color: Colors.primaryColor,
-    marginBottom: 25,
-  },
-  walletText: {
-    fontFamily: "josefsans-regular",
-    fontSize: 18,
-  },
-  walletIcon: {
-    width: 96,
-    height: 96,
-    margin: 40,
-  },
-  walletButton: {
-    width: 270,
-    height: 58,
-    backgroundColor: "#ECFCF4",
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 50,
-    flexDirection: "row",
-    shadowColor: Colors.shadow,
-    shadowOpacity: 0.1,
-  },
-  WalletButtonText: {
-    fontFamily: "josefsans-regular",
-    color: Colors.primaryColor,
-    fontSize: 20,
-  },
-  buttonView: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginLeft: 41,
-  },
-  textAlign: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  fontbold: {
-    fontFamily: "josefsans-bold",
-    fontSize: 14,
-    color: Colors.primaryColor,
-  },
-  rightIcon: {
-    marginLeft: 31,
   },
   screen: {
     flexDirection: "row",
@@ -285,14 +238,35 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "flex-start",
   },
+  text_input: {
+    width: 230,
+    height: 40,
+    fontFamily: "josefsans-regular",
+    fontSize: 18,
+  },
+  searchIcon: {
+    marginLeft: 22,
+    marginRight: 13,
+  },
+  filterIcon: {
+    borderWidth: 1,
+    borderColor: Colors.grey,
+    borderRadius: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+  },
   listView: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
     alignItems: "flex-start",
     width: 330,
     paddingLeft: 20,
-    //borderWidth: 1,
+    borderWidth: 1,
+  },
+  taskView: {
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.primaryColor,
+    paddingVertical: 10,
   },
 });
 

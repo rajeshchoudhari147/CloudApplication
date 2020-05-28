@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.primaryColor,
-    fontFamily: "josefsans-italic",
+    fontFamily: "josefsans-regular",
     fontSize: 35,
     marginTop: 29,
   },

@@ -8,7 +8,7 @@ import {
   TextInput,
 } from "react-native";
 
-import Amplify, { Auth } from "aws-amplify";
+//import Amplify, { Auth } from "aws-amplify";
 import { Images } from "../assets/Images";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
@@ -74,7 +74,7 @@ class ConfirmationCode extends Component {
             />
             <TouchableOpacity
               style={styles.button}
-              onPress={confirmSignUp.bind(this)}
+              // onPress={confirmSignUp.bind(this)}
             >
               <Text style={styles.buttonText}>Confirm Sign Up</Text>
             </TouchableOpacity>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.primaryColor,
-    fontFamily: "josefsans-italic",
+    fontFamily: "josefsans-regular",
     fontSize: 35,
     marginTop: 29,
   },

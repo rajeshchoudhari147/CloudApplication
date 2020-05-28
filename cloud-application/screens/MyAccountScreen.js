@@ -9,11 +9,8 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
-import { CARDS, USER } from "../data/dummy-data";
 
 const MyAccountScreen = (props) => {
-  const userID = "u1";
-  const currentUser = USER.find((user) => user.id === userID);
 
   return (
     <View style={styles.outerContainer}>
@@ -33,18 +30,15 @@ const MyAccountScreen = (props) => {
         <View>
           <TextInput
             placeholder={"Name"}
-            value={currentUser.name}
             style={[styles.text_input, { marginTop: 37 }]}
           />
           <TextInput
             placeholder={"Email address"}
-            value={currentUser.email}
             editable={false}
             style={styles.text_input}
           />
           <TextInput
             placeholder={"Password"}
-            value={currentUser.password}
             style={styles.text_input}
             secureTextEntry={true}
           />
@@ -88,7 +82,7 @@ const styles = StyleSheet.create({
     paddingRight: 30,
   },
   headerFont: {
-    fontFamily: "josefsans-bold",
+    fontFamily: "josefsans-regular",
     marginLeft: 30,
     fontSize: 19,
   },
