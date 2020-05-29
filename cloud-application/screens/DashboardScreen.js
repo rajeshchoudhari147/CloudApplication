@@ -119,8 +119,8 @@ class DashboardScreen extends Component {
           <View style={styles.listView}>
             {this.state.tasks.map((task, index) => (
               <View key={index} style={styles.taskView}>
-                <Text style={styles.title}>{task.name}</Text>
-                <Text style={styles.title}>{task.description}</Text>
+                <Text style={styles.name}>{task.name}</Text>
+                <Text style={styles.desc}>- {task.description}</Text>
               </View>
             ))}
           </View>
@@ -207,8 +207,21 @@ const styles = StyleSheet.create({
   taskView: {
     borderBottomWidth: 1,
     borderBottomColor: Colors.primaryColor,
-    paddingVertical: 10,
+    paddingTop: 20,
+    width: 350,
+    height: 58,
   },
+  name: {
+    fontFamily: "josefsans-regular",
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 10
+  },
+  desc: {
+    fontFamily: "josefsans-regular",
+    fontSize: 12,
+    marginLeft: 10
+  }
 });
 
 export default DashboardScreen;
