@@ -1,5 +1,9 @@
+import { Auth, Analytics, Storage } from "aws-amplify";
+import * as ImagePicker from "expo-image-picker";
+import { Images } from "../assets/Images";
+import Colors from "../constants/Colors";
+
 import React, { Component } from "react";
-import { Auth, Analytics } from "aws-amplify";
 import {
   Image,
   StyleSheet,
@@ -8,17 +12,6 @@ import {
   Text,
   TextInput,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-
-import { Linking } from "expo";
-import {
-  Ionicons,
-  MaterialCommunityIcons,
-  MaterialIcons,
-  Feather,
-} from "@expo/vector-icons";
-import { Images } from "../assets/Images";
-import Colors from "../constants/Colors";
 
 class AccountScreen extends Component {
   constructor() {
@@ -44,8 +37,21 @@ class AccountScreen extends Component {
       return;
     }
 
-    const pickerResult = await ImagePicker.launchImageLibraryAsync();
-    console.log(pickerResult);
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [3, 3],
+    });
+    const imageName = pickerResult.uri.replace(/^.*[\\\/]/, "");
+    const access = { level: "public", contentType: "image/jpeg" };
+    const imageData = await fetch(pickerResult.uri);
+    const blobData = await imageData.blob();
+
+    try {
+      await Storage.put(imageName, blobData, access);
+      console.log("Sucessfully uploaded image...")
+    } catch (err) {
+      console.log("S3 upload error: ", err);
+    }
 
     if (pickerResult.cancelled === true) {
       return;
@@ -55,6 +61,72 @@ class AccountScreen extends Component {
   };
 
   render() {
+    if (this.state.selectedImage !== null) {
+      return (
+        <View style={styles.outerContainer}>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text style={styles.headerFont}>Account</Text>
+            </View>
+          </View>
+          <View style={styles.innerContainer}>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  this.openImagePickerAsync();
+                  Analytics.record({
+                    name: "Change profile picture",
+                    attributes: { username: this.state.user.username },
+                  });
+                }}
+                style={styles.tabCircle}
+              >
+                <Image
+                  style={styles.profile}
+                  source={{
+                    uri: this.state.selectedImage.uri,
+                    crop: { left: 10, top: 50, width: 20, height: 40 },
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TextInput
+                placeholder={"Username"}
+                style={[styles.text_input, { marginTop: 37 }]}
+              />
+              <TextInput
+                placeholder={"Email address"}
+                editable={false}
+                style={styles.text_input}
+              />
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  this.props.navigation.navigate("Main");
+                }}
+              >
+                <Text style={styles.buttonText}>Log Out</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      );
+    }
+
+    // if (this.state.selectedImage !== null) {
+    //   return (
+    //     <View style={styles.container}>
+    //       <Image
+    //         source={{ uri: this.state.selectedImage.uri }}
+    //         style={styles.thumbnail}
+    //       />
+    //     </View>
+    //   );
+    // }
+
     return (
       <View style={styles.outerContainer}>
         <View style={styles.container}>
@@ -74,12 +146,12 @@ class AccountScreen extends Component {
               }}
               style={styles.tabCircle}
             >
-              <Image source={{ uri: selectedImage.localUri }} />
+              <Image style={styles.profile} source={Images.defaultProfile} />
             </TouchableOpacity>
           </View>
           <View>
             <TextInput
-              placeholder={"Name"}
+              placeholder={"Username"}
               style={[styles.text_input, { marginTop: 37 }]}
             />
             <TextInput
@@ -147,6 +219,11 @@ const styles = StyleSheet.create({
     borderWidth: 2.5,
     justifyContent: "center",
     alignItems: "center",
+  },
+  profile: {
+    width: 180,
+    height: 180,
+    resizeMode: "contain",
   },
   text_input: {
     width: 305,

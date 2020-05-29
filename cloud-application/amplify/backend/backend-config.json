@@ -7,22 +7,6 @@
 		}
 	},
 	"api": {
-		"graphql": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "API_KEY",
-						"apiKeyConfig": {
-							"description": "graphqlAPI",
-							"apiKeyExpirationDays": "60"
-						}
-					}
-				}
-			}
-		},
 		"lambdaAPI": {
 			"service": "API Gateway",
 			"providerPlugin": "awscloudformation",

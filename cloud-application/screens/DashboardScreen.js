@@ -2,6 +2,8 @@ import { API, graphqlOperation, Analytics, Auth } from "aws-amplify";
 import React, { Component, useState } from "react";
 import { Ionicons, Octicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import { createToDo as CreateToDo } from "../src/graphql/mutations";
+import { listToDo as ListToDos } from "../src/graphql/queries";
 import {
   Platform,
   StyleSheet,
@@ -10,65 +12,6 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-
-const ListTasks = `
-    query {
-      listTasks {
-        items {
-          id 
-          task 
-          completed
-        }
-      }
-    }
-    `;
-const AddTask = `
-    mutation ($task: String! $completed: Boolean!) {
-      createTask(input: {
-        task: $task
-        completed: $completed
-      }) {
-        id 
-        task 
-        completed
-      }
-    }
-    `;
-
-// class DashboardScreen extends Component {
-//   constructor() {
-//     super();
-//     this.state = {
-//       task: "",
-//       completed: false,
-//       listOfTasks: [],
-//     };
-//   }
-//   async componentDidMount() {
-//     try {
-//       const listOfTasks = await API.graphql(graphqlOperation(ListTasks));
-//       console.log("listOfTasks: ", listOfTasks);
-//       this.setState({ listOfTasks: listOfTasks.data.listTasks.items });
-//     } catch (err) {
-//       console.log("error: ", err);
-//     }
-//   }
-//   addTask = async () => {
-//     if (this.state.task === "" || this.state.completed === false) return;
-//     const listOfTask = {
-//       task: this.state.task,
-//       completed: this.state.completed,
-//     };
-//     try {
-//       const listOfTasks = [...this.state.listOfTasks, listOfTask];
-//       this.setState({ listOfTasks, task: "", completed: false });
-//       console.log("listOfTasks: ", listOfTasks);
-//       await API.graphql(graphqlOperation(AddToDo, listOfTask));
-//       console.log("success.. tasks added");
-//     } catch (err) {
-//       console.log("error: ", err);
-//     }
-//   };
 
 class DashboardScreen extends Component {
   state = {
@@ -86,9 +29,9 @@ class DashboardScreen extends Component {
       const restData = await API.get("lambdaAPI", "/tasks");
       // this.setState({ tasks: restData.tasks });
       //console.log("Lambda Function: ", restData);
-      const graphqldata = await API.graphql(graphqlOperation(ListTasks));
-      console.log("graphqldata:", graphqldata);
-      this.setState({ tasks: graphqldata.data.listTasks.items });
+      const graphqldata = await API.graphql(graphqlOperation(ListToDos));
+      console.log("ToDo Data (Graphql):", graphqldata);
+      this.setState({ tasks: graphqldata.data.listToDos.items });
     } catch (err) {
       console.log("Component Did Mount Error: ", err);
     }
@@ -99,16 +42,17 @@ class DashboardScreen extends Component {
   };
 
   AddTask = async () => {
-    const task = this.state;
-    if (task.task === "" || task.completed === "false") return;
-    const tasks = [...this.state.tasks, task];
-    this.setState({ tasks, task: "", completed: "false" });
+    const { task, completed} = useState
+    if (task === "" || completed === "false") return;
+    const todo = { task, completed };
+    const todos = [...this.state.tasks, { input: todo} ];
+    this.setState({ tasks: todos, task: "", completed: "false" });
     try {
       Analytics.record({
         name: "Task Added",
         attributes: { name: this.state.user.username },
       });
-      await API.graphql(graphqlOperation(AddTask, task));
+      await API.graphql(graphqlOperation(CreateToDo, todo));
       console.log("Task created successfully");
     } catch (err) {
       console.log("Error creating task...", err);

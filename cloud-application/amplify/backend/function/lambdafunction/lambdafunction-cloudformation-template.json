@@ -68,7 +68,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cloudapplication-cloud-152007-deployment",
-					"S3Key": "amplify-builds/lambdafunction-624e392b545332365746-build.zip"
+					"S3Key": "amplify-builds/lambdafunction-37357648476568765662-build.zip"
 				}
 			}
 		},
