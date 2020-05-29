@@ -38,12 +38,6 @@ const AccountNavigator = createStackNavigator({
       headerShown: false,
     },
   },
-  ManageAccount: {
-    screen: MyAccountScreen,
-    navigationOptions: {
-      headerShown: false,
-    },
-  },
 });
 
 const TabNavigator = createBottomTabNavigator(

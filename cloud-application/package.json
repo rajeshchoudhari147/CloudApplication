@@ -16,6 +16,7 @@
     "expo": "~37.0.3",
     "expo-constants": "^9.0.0",
     "expo-font": "^8.1.1",
+    "expo-image-picker": "^8.1.0",
     "link": "^0.1.5",
     "native": "^0.3.3",
     "react": "^16.9.0",

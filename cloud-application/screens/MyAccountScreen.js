@@ -16,14 +16,9 @@ const MyAccountScreen = (props) => {
     <View style={styles.outerContainer}>
       <View style={styles.container}>
         <View style={styles.backButton}>
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate("Account");
-            }}
-          >
-            <Ionicons name="ios-arrow-back" size={25} />
-          </TouchableOpacity>
-          <Text style={styles.headerFont}>My account</Text>
+        <View style={styles.header}>
+            <Text style={styles.headerFont}>Account</Text>
+          </View>
         </View>
       </View>
       <View style={styles.innerContainer}>

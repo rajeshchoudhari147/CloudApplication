@@ -1,12 +1,14 @@
 import React, { Component } from "react";
+import { Auth, Analytics } from "aws-amplify";
 import {
+  Image,
   StyleSheet,
   View,
-  Image,
   TouchableOpacity,
   Text,
-  Switch,
+  TextInput,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 import { Linking } from "expo";
 import {
@@ -19,19 +21,38 @@ import { Images } from "../assets/Images";
 import Colors from "../constants/Colors";
 
 class AccountScreen extends Component {
-  openContactUs = () => {
-    let url = "mailto:help@1receipt.io?subject=1receipt support";
-    Linking.openURL(url);
-  };
+  constructor() {
+    super();
+    this.state = {
+      selectedImage: null,
+    };
+  }
+  async componentDidMount() {
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      this.setState({ user });
+    } catch (err) {
+      console.log("Component Did Mount Error: ", err);
+    }
+  }
 
-  state = {
-    switchValue: true,
-  };
+  openImagePickerAsync = async () => {
+    const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
-  handleSwitch = () =>
-    this.setState((state) => ({
-      switchValue: !state.switchValue,
-    }));
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync();
+    console.log(pickerResult);
+
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+
+    this.setState({ selectedImage: pickerResult.uri });
+  };
 
   render() {
     return (
@@ -43,38 +64,39 @@ class AccountScreen extends Component {
         </View>
         <View style={styles.innerContainer}>
           <View>
-            <Image style={styles.brandLogo} source={Images.logo} />
+            <TouchableOpacity
+              onPress={() => {
+                this.openImagePickerAsync();
+                Analytics.record({
+                  name: "Change profile picture",
+                  attributes: { username: this.state.user.username },
+                });
+              }}
+              style={styles.tabCircle}
+            >
+              <Image source={{ uri: selectedImage.localUri }} />
+            </TouchableOpacity>
           </View>
-
-          <View style={styles.screen}>
-            <View style={styles.screenContent}>
-              <TouchableOpacity
-                style={styles.buttonView}
-                onPress={() => {
-                  this.props.navigation.navigate("ManageAccount");
-                }}
-              >
-                <MaterialIcons
-                  name="person-outline"
-                  size={25}
-                  style={styles.icon}
-                  color={Colors.grey}
-                />
-                <View style={styles.textAlign}>
-                  <Text style={styles.font}>My Account</Text>
-                </View>
-                <Feather
-                  name="chevron-right"
-                  size={25}
-                  style={styles.rightIcon}
-                  color={Colors.primaryColor}
-                />
-              </TouchableOpacity>
-
-              <View style={styles.version}>
-                <Text style={styles.versionFont}>People's Bank v1</Text>
-              </View>
-            </View>
+          <View>
+            <TextInput
+              placeholder={"Name"}
+              style={[styles.text_input, { marginTop: 37 }]}
+            />
+            <TextInput
+              placeholder={"Email address"}
+              editable={false}
+              style={styles.text_input}
+            />
+          </View>
+          <View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                this.props.navigation.navigate("Main");
+              }}
+            >
+              <Text style={styles.buttonText}>Log Out</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -93,6 +115,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
+  backButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 35,
+    paddingLeft: 30,
+    paddingRight: 30,
+  },
   header: {
     marginTop: 35,
     marginLeft: 41,
@@ -100,64 +130,69 @@ const styles = StyleSheet.create({
   headerFont: {
     fontFamily: "josefsans-regular",
     fontSize: 19,
-    color: 'white'
+    color: "white",
   },
   innerContainer: {
-    flex: 1,
     backgroundColor: Colors.secondaryColor,
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  tabCircle: {
+    width: 150,
+    height: 150,
+    borderRadius: 700,
+    backgroundColor: Colors.secondaryColor,
+    borderColor: "white",
+    borderWidth: 2.5,
+    justifyContent: "center",
     alignItems: "center",
   },
-  brandLogo: {
-    width: 100,
-    height: 100,
-  },
-  screen: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    backgroundColor: 'white',
-    marginTop: 30,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-  },
-  screenContent: {
-    flex: 1,
-    marginTop: 57,
-  },
-  buttonView: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  textAlign: {
-    flex: 1,
-    alignItems: "flex-start",
-  },
-  font: {
+  text_input: {
+    width: 305,
+    height: 58,
+    borderRadius: 22,
+    marginBottom: 36,
+    shadowColor: Colors.shadow,
+    backgroundColor: "white",
+    shadowOpacity: 0.1,
     fontFamily: "josefsans-regular",
     fontSize: 18,
-    color: Colors.primaryColor,
+    padding: 20,
   },
-  icon: {
-    marginLeft: 33,
-    marginRight: 12,
-  },
-  rightIcon: {
-    marginRight: 33,
-    justifyContent: "flex-end",
-  },
-  version: {
-    flex: 1,
-    justifyContent: "flex-end",
+  updateButton: {
+    width: 305,
+    height: 58,
+    justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 22,
+    borderColor: Colors.primaryColor,
+    borderWidth: 4,
+    shadowColor: Colors.shadow,
+    shadowOpacity: 0.1,
   },
-  versionFont: {
+  updateButtonText: {
     fontFamily: "josefsans-regular",
-    fontSize: 15,
     color: Colors.primaryColor,
-    marginBottom: 21,
+    fontSize: 20,
+  },
+  button: {
+    width: 305,
+    height: 58,
+    backgroundColor: Colors.primaryColor,
+    borderRadius: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 19,
+    marginBottom: 58,
+    shadowColor: Colors.shadow,
+    shadowOpacity: 0.1,
+  },
+  buttonText: {
+    fontFamily: "josefsans-regular",
+    color: "white",
+    fontSize: 20,
   },
 });
 
