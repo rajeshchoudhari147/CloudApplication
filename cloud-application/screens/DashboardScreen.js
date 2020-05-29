@@ -2,8 +2,7 @@ import { API, graphqlOperation, Analytics, Auth } from "aws-amplify";
 import React, { Component, useState } from "react";
 import { Ionicons, Octicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
-import { createToDo as CreateToDo } from "../src/graphql/mutations";
-import { listToDo as ListToDos } from "../src/graphql/queries";
+
 import {
   Platform,
   StyleSheet,
@@ -13,10 +12,33 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+const listTasks = `
+  query {
+    listTask {
+      items {
+        id
+        name
+        description
+      }
+    }
+ }
+`;
+const createTask = `
+  mutation($name: String!, $description: String) {
+    createTask(input: {
+      name: $name
+      description: $description
+  }) {
+    id
+    name
+    description
+  }
+}`;
+
 class DashboardScreen extends Component {
   state = {
-    task: "",
-    completed: "false",
+    name: "",
+    description: "",
     tasks: [],
     user: {},
   };
@@ -26,12 +48,16 @@ class DashboardScreen extends Component {
       const user = await Auth.currentAuthenticatedUser();
       //console.log(user);
       this.setState({ user: user });
+
       const restData = await API.get("lambdaAPI", "/tasks");
-      // this.setState({ tasks: restData.tasks });
-      //console.log("Lambda Function: ", restData);
-      const graphqldata = await API.graphql(graphqlOperation(ListToDos));
+      this.setState({ tasks: restData.tasks });
+      console.log("Lambda Function: ", restData);
+
+      const graphqldata = await API.graphql(graphqlOperation(listTasks));
       console.log("ToDo Data (Graphql):", graphqldata);
-      this.setState({ tasks: graphqldata.data.listToDos.items });
+      this.setState({ tasks: graphqldata.data.listTask.items });
+
+      
     } catch (err) {
       console.log("Component Did Mount Error: ", err);
     }
@@ -42,17 +68,16 @@ class DashboardScreen extends Component {
   };
 
   AddTask = async () => {
-    const { task, completed} = useState
-    if (task === "" || completed === "false") return;
-    const todo = { task, completed };
-    const todos = [...this.state.tasks, { input: todo} ];
-    this.setState({ tasks: todos, task: "", completed: "false" });
+    const task = this.state;
+    if (task.name === "" || task.description === "") return;
+    const tasks = [...this.state.tasks, task];
+    this.setState({ tasks, name: "", description: "" });
     try {
       Analytics.record({
         name: "Task Added",
         attributes: { name: this.state.user.username },
       });
-      await API.graphql(graphqlOperation(CreateToDo, todo));
+      await API.graphql(graphqlOperation(createTask, task));
       console.log("Task created successfully");
     } catch (err) {
       console.log("Error creating task...", err);
@@ -70,43 +95,35 @@ class DashboardScreen extends Component {
           </View>
         </View>
         <View style={styles.innerContainer}>
-          <View style={styles.screen}>
-            <View style={styles.screenContent}>
-              <View style={styles.searchBar}>
-                <View style={styles.search}>
-                  <Octicons
-                    name="tasklist"
-                    size={35}
-                    style={styles.searchIcon}
-                    color={Colors.grey}
-                  />
-                  <View style={styles.textInputAlign}>
-                    <TextInput
-                      placeholder={"Enter your task here..."}
-                      style={styles.text_input}
-                      onChangeText={(task) => {
-                        this._changeTask(task);
-                        this.setState({ completed: false });
-                      }}
-                    />
-                  </View>
-                </View>
-                <TouchableOpacity onPress={this.AddTask}>
-                  <Ionicons
-                    name="md-add"
-                    size={35}
-                    style={styles.filterIcon}
-                    color={Colors.grey}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
+          <View>
+            <TextInput
+              placeholder={"Task"}
+              style={[styles.text_input, { marginTop: 37 }]}
+              onChangeText={(val) => this.onChangeText("name", val)}
+              value={this.state.name}
+            />
+            <TextInput
+              placeholder={"Description"}
+              style={styles.text_input}
+              onChangeText={(val) => this.onChangeText("description", val)}
+              value={this.state.description}
+            />
+
+            <TouchableOpacity style={styles.button} onPress={this.AddTask}>
+              <Ionicons
+                name="md-add"
+                size={35}
+                style={styles.addIcon}
+                color={Colors.grey}
+              />
+            </TouchableOpacity>
           </View>
+
           <View style={styles.listView}>
-            {/* <Text>{this.state.tasks.task}</Text> */}
             {this.state.tasks.map((task, index) => (
               <View key={index} style={styles.taskView}>
-                <Text style={styles.title}>{task.task}</Text>
+                <Text style={styles.title}>{task.name}</Text>
+                <Text style={styles.title}>{task.description}</Text>
               </View>
             ))}
           </View>
@@ -128,7 +145,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    backgroundColor: "white",
+    backgroundColor: Colors.secondaryColor,
     marginTop: 35,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -140,6 +157,7 @@ const styles = StyleSheet.create({
   headerFont: {
     fontFamily: "josefsans-regular",
     fontSize: 19,
+    color: "white",
   },
   font: {
     marginTop: 10,
@@ -148,68 +166,46 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: Colors.secondaryColor,
     justifyContent: "flex-start",
     alignItems: "center",
-  },
-  screen: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    backgroundColor: "white",
-    height: 48,
-    marginBottom: 82,
-    marginLeft: 29,
-    marginRight: 29,
-  },
-  screenContent: {
-    flex: 1,
-    height: 100,
-  },
-  searchBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  search: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 9,
-    borderWidth: 1,
-    borderColor: Colors.grey,
-    borderRadius: 10,
-    padding: 2,
-  },
-  textInputAlign: {
-    flex: 1,
-    alignItems: "flex-start",
   },
   text_input: {
-    width: 230,
-    height: 40,
+    width: 350,
+    height: 58,
+    borderRadius: 22,
+    marginBottom: 10,
+    shadowColor: Colors.shadow,
+    backgroundColor: "white",
+    shadowOpacity: 0.1,
     fontFamily: "josefsans-regular",
     fontSize: 18,
+    padding: 20,
   },
-  searchIcon: {
+  addIcon: {
     marginLeft: 22,
     marginRight: 13,
   },
-  filterIcon: {
-    borderWidth: 1,
-    borderColor: Colors.grey,
-    borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 5,
+  button: {
+    width: 350,
+    height: 58,
+    backgroundColor: Colors.primaryColor,
+    borderRadius: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 20,
+    shadowColor: Colors.shadow,
+    shadowOpacity: 0.1,
   },
   listView: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    width: 330,
-    paddingLeft: 20,
-    borderWidth: 1,
+    borderRadius: 22,
+    width: 350,
+    backgroundColor: "white",
+    marginBottom: 10,
   },
   taskView: {
     borderBottomWidth: 1,
