@@ -1,10 +1,9 @@
 import { API, graphqlOperation, Analytics, Auth } from "aws-amplify";
-import React, { Component, useState } from "react";
-import { Ionicons, Octicons } from "@expo/vector-icons";
+import React, { Component } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 
 import {
-  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -46,11 +45,9 @@ class DashboardScreen extends Component {
   async componentDidMount() {
     try {
       const user = await Auth.currentAuthenticatedUser();
-      //console.log(user);
       this.setState({ user: user });
 
       const restData = await API.get("lambdaAPI", "/tasks");
-      this.setState({ tasks: restData.tasks });
       console.log("Lambda Function: ", restData);
 
       const graphqldata = await API.graphql(graphqlOperation(listTasks));
